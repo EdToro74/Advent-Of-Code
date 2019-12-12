@@ -6,4 +6,8 @@
     <RootNamespace>Advent_Of_Code_2019</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Combinatorics" Version="1.1.0.19" />
+  </ItemGroup>
+
 </Project>

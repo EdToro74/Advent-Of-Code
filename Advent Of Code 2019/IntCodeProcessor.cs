@@ -6,29 +6,41 @@ namespace Advent_Of_Code_2019
 {
     static class IntCodeProcessor
     {
-        public static void ProcessProgram(IEnumerable<string> programText, int[] inputs = null)
+        public static int[] ParseProgram(IEnumerable<string> programText)
         {
-            var program = programText.First().Split(',').Select(s => int.Parse(s)).ToArray();
-
-            ProcessProgram(program, inputs);
+            return programText.First().Split(',').Select(s => int.Parse(s)).ToArray();
         }
 
-        public static void ProcessProgram(int[] program, int[] inputs = null)
+        public static int[] CopyProgram(int[] program)
+        {
+            var copy = new int[program.Length];
+            program.CopyTo(copy, 0);
+            return copy;
+        }
+
+        public static int[] ProcessProgram(IEnumerable<string> programText, int[] inputs = null)
+        {
+            var program = ParseProgram(programText);
+
+            return ProcessProgram(program, inputs);
+        }
+
+        public static int[] ProcessProgram(int[] program, int[] inputs = null)
+        {
+            var inputPointer = 0;
+            return ProcessProgramEnumerable(program, () => inputs[inputPointer++]).ToArray();
+        }
+
+        public static IEnumerable<int> ProcessProgramEnumerable(int[] program, Func<int> inputHandler)
         {
             var instructionPointer = 0;
-            var inputPointer = 0;
-            var outputted = false;
 
             while (true)
             {
                 var instruction = GetInstruction(program, instructionPointer);
                 if (instruction == 99)
                 {
-                    if (outputted)
-                    {
-                        Console.WriteLine();
-                    }
-                    return;
+                    yield break;
                 }
 
                 var parameters = GetParameters(program, instruction, instructionPointer).ToArray();
@@ -47,14 +59,13 @@ namespace Advent_Of_Code_2019
                         break;
                     case 3:
                         // Input
-                        var input = inputs[inputPointer++];
+                        var input = inputHandler();
                         program[parameters[0].value] = input;
                         instructionPointer += 2;
                         break;
                     case 4:
                         // Output
-                        Console.Write(GetParameterValue(program, parameters[0]));
-                        outputted = true;
+                        yield return GetParameterValue(program, parameters[0]);
                         instructionPointer += 2;
                         break;
                     case 5:

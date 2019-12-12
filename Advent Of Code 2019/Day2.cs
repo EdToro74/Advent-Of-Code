@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace Advent_Of_Code_2019
 {
@@ -8,9 +6,7 @@ namespace Advent_Of_Code_2019
     {
         public static int Part1(IEnumerable<string> input)
         {
-            var programText = input.First();
-
-            var program = programText.Split(',').Select(s => int.Parse(s)).ToArray();
+            var program = IntCodeProcessor.ParseProgram(input);
 
             program[1] = 12;
             program[2] = 2;
@@ -22,16 +18,13 @@ namespace Advent_Of_Code_2019
 
         public static int Part2(IEnumerable<string> input)
         {
-            var programText = input.First();
+            var program = IntCodeProcessor.ParseProgram(input);
 
-            var program = programText.Split(',').Select(s => int.Parse(s)).ToArray();
-
-            for(int noun = 0; noun < 100; noun++)
+            for (int noun = 0; noun < 100; noun++)
             {
                 for (int verb = 0; verb < 100; verb++)
                 {
-                    var copy = new int[program.Length];
-                    program.CopyTo(copy, 0);
+                    var copy = IntCodeProcessor.CopyProgram(program);
 
                     copy[1] = noun;
                     copy[2] = verb;
