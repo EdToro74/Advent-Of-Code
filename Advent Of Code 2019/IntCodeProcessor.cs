@@ -6,157 +6,245 @@ namespace Advent_Of_Code_2019
 {
     static class IntCodeProcessor
     {
-        public static int[] ParseProgram(IEnumerable<string> programText)
+        public class ProgramState
         {
-            return programText.First().Split(',').Select(s => int.Parse(s)).ToArray();
+            private long[] Program { get; }
+            public Dictionary<long, long> Memory { get; } = new Dictionary<long, long>();
+            public long RelativeIndex { get; set; }
+            public long InstructionPointer { get; set; }
+
+            public ProgramState(long[] program)
+            {
+                Program = program;
+            }
+
+            public void SetMemory(long index, long value)
+            {
+                if (index < Program.Length)
+                {
+                    Program[index] = value;
+                }
+                else
+                {
+                    Memory[index] = value;
+                }
+            }
+
+            public long GetMemory(long index)
+            {
+                if (index < Program.Length)
+                {
+                    return Program[index];
+                }
+                else
+                {
+                    Memory.TryGetValue(index, out var value);
+                    return value;
+                }
+            }
+
+            public ProgramState Copy()
+            {
+                var copy = new long[Program.Length];
+                Program.CopyTo(copy, 0);
+                return new ProgramState(copy);
+            }
         }
 
-        public static int[] CopyProgram(int[] program)
+        public static ProgramState ParseProgram(IEnumerable<string> programText)
         {
-            var copy = new int[program.Length];
-            program.CopyTo(copy, 0);
-            return copy;
+            var program = programText.First().Split(',').Select(s => long.Parse(s)).ToArray();
+            return new ProgramState(program);
         }
 
-        public static int[] ProcessProgram(IEnumerable<string> programText, int[] inputs = null)
+        public static ProgramState CopyProgram(ProgramState programState)
+        {
+            return programState.Copy();
+        }
+
+        public static long[] ProcessProgram(IEnumerable<string> programText, params long[] inputs)
         {
             var program = ParseProgram(programText);
 
             return ProcessProgram(program, inputs);
         }
 
-        public static int[] ProcessProgram(int[] program, int[] inputs = null)
+        public static long[] ProcessProgram(ProgramState programState, params long[] inputs)
         {
             var inputPointer = 0;
-            return ProcessProgramEnumerable(program, () => inputs[inputPointer++]).ToArray();
+            return ProcessProgramEnumerable(programState, () => inputs[inputPointer++]).ToArray();
         }
 
-        public static IEnumerable<int> ProcessProgramEnumerable(int[] program, Func<int> inputHandler)
+        public static IEnumerable<long> ProcessProgramEnumerable(ProgramState programState, Func<long> inputHandler)
         {
-            var instructionPointer = 0;
-
             while (true)
             {
-                var instruction = GetInstruction(program, instructionPointer);
-                if (instruction == 99)
-                {
-                    yield break;
-                }
-
-                var parameters = GetParameters(program, instruction, instructionPointer).ToArray();
+                var (instruction, parameters) = GetInstruction(programState);
 
                 switch (instruction)
                 {
                     case 1:
                         // Add
-                        program[parameters[2].value] = GetParameterValue(program, parameters[0]) + GetParameterValue(program, parameters[1]);
-                        instructionPointer += 4;
+                        programState.SetMemory(parameters[2], parameters[0] + parameters[1]);
+                        programState.InstructionPointer += 4;
                         break;
                     case 2:
                         // Multiple
-                        program[parameters[2].value] = GetParameterValue(program, parameters[0]) * GetParameterValue(program, parameters[1]);
-                        instructionPointer += 4;
+                        programState.SetMemory(parameters[2], parameters[0] * parameters[1]);
+                        programState.InstructionPointer += 4;
                         break;
                     case 3:
                         // Input
                         var input = inputHandler();
-                        program[parameters[0].value] = input;
-                        instructionPointer += 2;
+                        programState.SetMemory(parameters[0], input);
+                        programState.InstructionPointer += 2;
                         break;
                     case 4:
                         // Output
-                        yield return GetParameterValue(program, parameters[0]);
-                        instructionPointer += 2;
+                        yield return parameters[0];
+                        programState.InstructionPointer += 2;
                         break;
                     case 5:
                         // Jump If True
-                        if (GetParameterValue(program, parameters[0]) != 0)
+                        if (parameters[0] != 0)
                         {
-                            instructionPointer = GetParameterValue(program, parameters[1]);
+                            programState.InstructionPointer = parameters[1];
                         }
                         else
                         {
-                            instructionPointer += 3;
+                            programState.InstructionPointer += 3;
                         }
                         break;
                     case 6:
                         // Jump If False
-                        if (GetParameterValue(program, parameters[0]) == 0)
+                        if (parameters[0] == 0)
                         {
-                            instructionPointer = GetParameterValue(program, parameters[1]);
+                            programState.InstructionPointer = parameters[1];
                         }
                         else
                         {
-                            instructionPointer += 3;
+                            programState.InstructionPointer += 3;
                         }
                         break;
                     case 7:
                         // Less Than
-                        program[parameters[2].value] = GetParameterValue(program, parameters[0]) < GetParameterValue(program, parameters[1]) ? 1 : 0;
-                        instructionPointer += 4;
+                        programState.SetMemory(parameters[2], parameters[0] < parameters[1] ? 1 : 0);
+                        programState.InstructionPointer += 4;
                         break;
                     case 8:
                         // Equals
-                        program[parameters[2].value] = GetParameterValue(program, parameters[0]) == GetParameterValue(program, parameters[1]) ? 1 : 0;
-                        instructionPointer += 4;
+                        programState.SetMemory(parameters[2], parameters[0] == parameters[1] ? 1 : 0);
+                        programState.InstructionPointer += 4;
                         break;
+                    case 9:
+                        // Adjust Relative Base
+                        programState.RelativeIndex += parameters[0];
+                        programState.InstructionPointer += 2;
+                        break;
+                    case 99:
+                        yield break;
                     default:
-                        throw new Exception($"Invalid opCode [{instruction}] at index [{instructionPointer}]");
+                        throw new Exception($"Invalid opCode [{instruction}] at index [{programState.InstructionPointer}]");
                 };
             }
         }
 
-        private static int GetInstruction(int[] program, int instructionPointer)
+        private static (long instruction, long[] parameters) GetInstruction(ProgramState programState)
         {
-            return program[instructionPointer] % 100;
-        }
+            var instruction = programState.GetMemory(programState.InstructionPointer) % 100;
 
-        private static IEnumerable<(bool isImmediate, int value)> GetParameters(int[] program, int instruction, int instructionPointer)
-        {
-            int parameterCount;
+            ParameterDirection[] parameterDirections;
 
             switch (instruction)
             {
                 case 1:
                 case 2:
-                    parameterCount = 3;
+                    parameterDirections = new[] { ParameterDirection.Read, ParameterDirection.Read, ParameterDirection.Write };
                     break;
                 case 3:
+                    parameterDirections = new[] { ParameterDirection.Write };
+                    break;
                 case 4:
-                    parameterCount = 1;
+                    parameterDirections = new[] { ParameterDirection.Read };
                     break;
                 case 5:
                 case 6:
-                    parameterCount = 2;
+                    parameterDirections = new[] { ParameterDirection.Read, ParameterDirection.Read };
                     break;
                 case 7:
                 case 8:
-                    parameterCount = 3;
+                    parameterDirections = new[] { ParameterDirection.Read, ParameterDirection.Read, ParameterDirection.Write };
+                    break;
+                case 9:
+                    parameterDirections = new[] { ParameterDirection.Read };
+                    break;
+                case 99:
+                    parameterDirections = Array.Empty<ParameterDirection>();
                     break;
                 default:
-                    throw new Exception($"Invalid opCode [{instruction}] at index [{instructionPointer}]");
+                    throw new Exception($"Invalid opCode [{instruction}] at index [{programState.InstructionPointer}]");
             }
 
-            var parameterModes = program[instructionPointer];
+            var parameterModes = programState.GetMemory(programState.InstructionPointer);
             var mask = 100;
 
-            for (var i = 1; i <= parameterCount; i++)
+            var parameters = new long[parameterDirections.Length];
+
+            for (var i = 0; i < parameterDirections.Length; i++)
             {
-                var isImmediate = parameterModes / mask % 10 == 1;
-                var parameterValue = program[instructionPointer + i];
-                yield return (isImmediate, parameterValue);
+                var parameterMode = (ParameterMode)(parameterModes / mask % 10);
+                var parameterValue = programState.GetMemory(programState.InstructionPointer + i + 1);
+
+                if (parameterDirections[i] == ParameterDirection.Read)
+                {
+                    switch (parameterMode)
+                    {
+                        case ParameterMode.Immediate:
+                            break;
+                        case ParameterMode.Positional:
+                            parameterValue = programState.GetMemory(parameterValue);
+                            break;
+                        case ParameterMode.Relative:
+                            parameterValue = programState.GetMemory(programState.RelativeIndex + parameterValue);
+                            break;
+                        default:
+                            throw new Exception($"Unsupported parameter mode: {parameterMode}");
+                    }
+                }
+                else
+                {
+                    switch (parameterMode)
+                    {
+                        case ParameterMode.Immediate:
+                            throw new Exception("Immediate mode not supported for Write parameters");
+                        case ParameterMode.Positional:
+                            break;
+                        case ParameterMode.Relative:
+                            parameterValue = programState.RelativeIndex + parameterValue;
+                            break;
+                        default:
+                            throw new Exception($"Unsupported parameter mode: {parameterMode}");
+                    }
+                }
+
+                parameters[i] = parameterValue;
                 mask *= 10;
             }
+
+            return (instruction, parameters);
         }
 
-        private static int GetParameterValue(int[] program, (bool isImmediate, int value) parameter)
+        private enum ParameterMode
         {
-            if (parameter.isImmediate)
-            {
-                return parameter.value;
-            }
+            Positional = 0,
+            Immediate = 1,
+            Relative = 2
+        }
 
-            return program[parameter.value];
+        private enum ParameterDirection
+        {
+            Read,
+            Write
         }
     }
 }

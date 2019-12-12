@@ -4,19 +4,19 @@ namespace Advent_Of_Code_2019
 {
     static class Day2
     {
-        public static int Part1(IEnumerable<string> input)
+        public static long Part1(IEnumerable<string> input)
         {
-            var program = IntCodeProcessor.ParseProgram(input);
+            var programState = IntCodeProcessor.ParseProgram(input);
 
-            program[1] = 12;
-            program[2] = 2;
+            programState.SetMemory(1, 12);
+            programState.SetMemory(2, 2);
 
-            IntCodeProcessor.ProcessProgram(program);
-            
-            return program[0];
+            IntCodeProcessor.ProcessProgram(programState);
+
+            return programState.GetMemory(0);
         }
 
-        public static int Part2(IEnumerable<string> input)
+        public static long Part2(IEnumerable<string> input)
         {
             var program = IntCodeProcessor.ParseProgram(input);
 
@@ -26,11 +26,11 @@ namespace Advent_Of_Code_2019
                 {
                     var copy = IntCodeProcessor.CopyProgram(program);
 
-                    copy[1] = noun;
-                    copy[2] = verb;
+                    copy.SetMemory(1, noun);
+                    copy.SetMemory(2, verb);
 
                     IntCodeProcessor.ProcessProgram(copy);
-                    if (copy[0] == 19690720)
+                    if (copy.GetMemory(0) == 19690720)
                     {
                         return 100 * noun + verb;
                     }

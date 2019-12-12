@@ -8,31 +8,31 @@ namespace Advent_Of_Code_2019
 {
     static class Day7
     {
-        public static int Part1(IEnumerable<string> input)
+        public static long Part1(IEnumerable<string> input)
         {
             return RunAmps(input, new[] { 0, 1, 2, 3, 4 });
         }
 
-        public static int Part2(IEnumerable<string> input)
+        public static long Part2(IEnumerable<string> input)
         {
             return RunAmps(input, new[] { 5, 6, 7, 8, 9 });
         }
 
-        public static int RunAmps(IEnumerable<string> input, int[] phases)
+        public static long RunAmps(IEnumerable<string> input, int[] phases)
         {
             var program = IntCodeProcessor.ParseProgram(input);
 
-            var maxSignal = 0;
+            var maxSignal = 0L;
 
             foreach (var permutation in new Permutations<int>(phases))
             {
-                var amps = new IEnumerator<int>[permutation.Count];
-                var inputs = new Queue<int>[permutation.Count];
+                var amps = new IEnumerator<long>[permutation.Count];
+                var inputs = new Queue<long>[permutation.Count];
                 var moveNextResults = new bool[permutation.Count];
 
                 for (var i = 0; i < permutation.Count; i++)
                 {
-                    inputs[i] = new Queue<int>();
+                    inputs[i] = new Queue<long>();
                     inputs[i].Enqueue(permutation[i]);
                     if (i == 0)
                     {
