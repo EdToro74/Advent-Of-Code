@@ -75,6 +75,13 @@ namespace Advent_Of_Code_2019
             return ProcessProgramEnumerable(programState, () => inputs[inputPointer++]).ToArray();
         }
 
+        public static IEnumerable<long> ProcessProgramEnumerable(IEnumerable<string> programText, Func<long> inputHandler)
+        {
+            var program = ParseProgram(programText);
+
+            return ProcessProgramEnumerable(program, inputHandler);
+        }
+
         public static IEnumerable<long> ProcessProgramEnumerable(ProgramState programState, Func<long> inputHandler)
         {
             while (true)
