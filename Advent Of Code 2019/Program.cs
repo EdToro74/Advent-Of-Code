@@ -28,8 +28,10 @@ namespace Advent_Of_Code_2019
             //Console.WriteLine(Day9.Part2(GetDayFile(9)));
             //Console.WriteLine(Day10.Part1(GetDayFile(10)));
             //Console.WriteLine(Day10.Part2(GetDayFile(10)));
-            Console.WriteLine(Day11.Part1(GetDayFile(11)));
-            Console.WriteLine(Day11.Part2(GetDayFile(11)));
+            //Console.WriteLine(Day11.Part1(GetDayFile(11)));
+            //Console.WriteLine(Day11.Part2(GetDayFile(11)));
+            Console.WriteLine(Day12.Part1(GetDayFile(12)));
+            Console.WriteLine(Day12.Part2(GetDayFile(12)));
         }
 
         static IEnumerable<string> GetDayFile(int day)
