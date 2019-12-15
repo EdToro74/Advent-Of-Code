@@ -6,10 +6,17 @@ namespace Advent_Of_Code_2019
 {
     static class IntCodeProcessor
     {
-        public class ProgramState
+        public interface IProgramState
+        {
+            void SetMemory(long index, long value);
+            long GetMemory(long index);
+            IProgramState Copy();
+        }
+
+        protected class ProgramState : IProgramState
         {
             private long[] Program { get; }
-            public Dictionary<long, long> Memory { get; } = new Dictionary<long, long>();
+            protected Dictionary<long, long> Memory { get; } = new Dictionary<long, long>();
             public long RelativeIndex { get; set; }
             public long InstructionPointer { get; set; }
 
@@ -43,7 +50,7 @@ namespace Advent_Of_Code_2019
                 }
             }
 
-            public ProgramState Copy()
+            public IProgramState Copy()
             {
                 var copy = new long[Program.Length];
                 Program.CopyTo(copy, 0);
@@ -51,13 +58,13 @@ namespace Advent_Of_Code_2019
             }
         }
 
-        public static ProgramState ParseProgram(IEnumerable<string> programText)
+        public static IProgramState ParseProgram(IEnumerable<string> programText)
         {
             var program = programText.First().Split(',').Select(s => long.Parse(s)).ToArray();
             return new ProgramState(program);
         }
 
-        public static ProgramState CopyProgram(ProgramState programState)
+        public static IProgramState CopyProgram(IProgramState programState)
         {
             return programState.Copy();
         }
@@ -69,21 +76,22 @@ namespace Advent_Of_Code_2019
             return ProcessProgram(program, inputs);
         }
 
-        public static long[] ProcessProgram(ProgramState programState, params long[] inputs)
+        public static long[] ProcessProgram(IProgramState programState, params long[] inputs)
         {
             var inputPointer = 0;
             return ProcessProgramEnumerable(programState, () => inputs[inputPointer++]).ToArray();
         }
 
-        public static IEnumerable<long> ProcessProgramEnumerable(IEnumerable<string> programText, Func<long> inputHandler)
+        public static IEnumerable<long> ProcessProgramEnumerable(IEnumerable<string> programText, Func<long> inputHandler = null)
         {
             var program = ParseProgram(programText);
 
             return ProcessProgramEnumerable(program, inputHandler);
         }
 
-        public static IEnumerable<long> ProcessProgramEnumerable(ProgramState programState, Func<long> inputHandler)
+        public static IEnumerable<long> ProcessProgramEnumerable(IProgramState program, Func<long> inputHandler)
         {
+            var programState = (ProgramState)program;
             while (true)
             {
                 var (instruction, parameters) = GetInstruction(programState);

@@ -60,22 +60,7 @@ namespace Advent_Of_Code_2019
 
         public static string DisplayImage(int[,] image)
         {
-            var height = image.GetLength(0);
-            var width = image.GetLength(1);
-
-            var display = new StringBuilder();
-
-            for (var y = 0; y < height; y++)
-            {
-                for (var x = 0; x < width; x++)
-                {
-                    display.Append(image[y, x] == 0 ? ' ' : '█');
-                }
-
-                display.AppendLine();
-            }
-
-            return display.ToString();
+            return Utility.DisplayImage(image, v=> v == 0 ? ' ' : '█');
         }
     }
 }
