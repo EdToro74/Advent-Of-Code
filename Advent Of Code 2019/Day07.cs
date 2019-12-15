@@ -6,7 +6,7 @@ using Combinatorics.Collections;
 
 namespace Advent_Of_Code_2019
 {
-    static class Day7
+    static class Day07
     {
         public static long Part1(IEnumerable<string> input)
         {

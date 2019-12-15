@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Advent_Of_Code_2019
 {
-    static class Day6
+    static class Day06
     {
         public static int Part1(IEnumerable<string> input)
         {

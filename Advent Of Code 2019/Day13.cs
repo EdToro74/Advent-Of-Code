@@ -125,7 +125,7 @@ namespace Advent_Of_Code_2019
                 }
                 if (started)
                 {
-                    Thread.Sleep(5);
+                    Thread.Sleep(1);
                 }
             } while (more);
 

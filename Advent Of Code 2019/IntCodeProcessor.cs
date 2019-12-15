@@ -157,6 +157,7 @@ namespace Advent_Of_Code_2019
                         programState.InstructionPointer += 2;
                         break;
                     case 99:
+                        // Exit
                         yield break;
                     default:
                         throw new Exception($"Invalid opCode [{instruction}] at index [{programState.InstructionPointer}]");

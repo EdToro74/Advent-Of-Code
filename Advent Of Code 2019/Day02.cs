@@ -2,7 +2,7 @@
 
 namespace Advent_Of_Code_2019
 {
-    static class Day2
+    static class Day02
     {
         public static long Part1(IEnumerable<string> input)
         {
