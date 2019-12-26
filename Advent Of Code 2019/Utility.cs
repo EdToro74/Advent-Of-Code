@@ -24,12 +24,12 @@ namespace Advent_Of_Code_2019
             var xMax = objects.Max(p => p.x);
             var xMin = objects.Min(p => p.x);
             var xRange = xMax - xMin + 1;
-            var xOffset = xMin < 0 ? xMin : 0;
+            var xOffset = -xMin;
 
             var yMax = objects.Max(p => p.y);
             var yMin = objects.Min(p => p.y);
             var yRange = yMax - yMin + 1;
-            var yOffset = yMin < 0 ? yMin : 0;
+            var yOffset = -yMin;
 
             var result = new TOut[yRange, xRange];
             foreach(var (x, y, value) in objects)
