@@ -12,7 +12,7 @@ namespace Advent_Of_Code_2019
             Console.WindowHeight = Console.LargestWindowHeight - 3;
             Console.SetWindowPosition(0, 0);
 
-            var map = TraverseMap(input);
+            var (map, deadEnds) = TraverseMap(input);
 
             var stepCount = 0;
 
@@ -24,7 +24,7 @@ namespace Advent_Of_Code_2019
 
             while (map[currentCoords] != 'O')
             {
-                var nextCoords = GetNeighbors(currentCoords).Where(neighbor => map.ContainsKey(neighbor.coords) && allowedTiles.Contains(map[neighbor.coords]) && neighbor.coords != lastCoords).Single().coords;
+                var nextCoords = GetNeighbors(currentCoords).Where(neighbor => map.ContainsKey(neighbor.coords) && allowedTiles.Contains(map[neighbor.coords]) && neighbor.coords != lastCoords && !deadEnds.Contains(neighbor.coords)).Single().coords;
                 lastCoords = currentCoords;
                 currentCoords = nextCoords;
                 stepCount++;
@@ -39,7 +39,7 @@ namespace Advent_Of_Code_2019
             Console.WindowHeight = Console.LargestWindowHeight - 3;
             Console.SetWindowPosition(0, 0);
 
-            var map = TraverseMap(input, true);
+            var (map, _) = TraverseMap(input, true);
 
             var oxygenated = new HashSet<(int x, int y)>();
             oxygenated.Add(map.Single(tile => tile.Value == 'O').Key);
@@ -62,7 +62,7 @@ namespace Advent_Of_Code_2019
                 }
 
                 steps++;
-                DisplayMap(map, (-1, -1), null);
+                //DisplayMap(map, (-1, -1), null);
                 producers = newProducers;
             }
 
@@ -143,7 +143,7 @@ namespace Advent_Of_Code_2019
             }
         }
 
-        private static Dictionary<(int x, int y), char> TraverseMap(IEnumerable<string> input, bool fullTraverse = false)
+        private static (Dictionary<(int x, int y), char> map, HashSet<(int x, int y)> deadEnds) TraverseMap(IEnumerable<string> input, bool fullTraverse = false)
         {
             var random = new Random();
 
@@ -278,14 +278,14 @@ namespace Advent_Of_Code_2019
 
                     if (!fullTraverse)
                     {
-                        return map;
+                        return (map, new HashSet<(int x, int y)>(deadEnds.Keys));
                     }
                 }
 
                 if (fullTraverse && missing.Count == 0)
                 {
-                    DisplayMap(map, (-1, -1), deadEnds);
-                    return map;
+                    //DisplayMap(map, (-1, -1), deadEnds);
+                    return (map, new HashSet<(int x, int y)>(deadEnds.Keys));
                 }
             }
 

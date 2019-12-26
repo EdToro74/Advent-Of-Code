@@ -36,6 +36,7 @@ namespace Advent_Of_Code_2019
             //Console.WriteLine(Day13.Part2(GetDayFile(13)));
             //Console.WriteLine(Day14.Part1(GetDayFile(14)));
             //Console.WriteLine(Day14.Part2(GetDayFile(14)));
+            Console.WriteLine(Day15.Part1(GetDayFile(15)));
             Console.WriteLine(Day15.Part2(GetDayFile(15)));
         }
 
