@@ -72,7 +72,7 @@ namespace Advent_Of_Code_2019
         private static void DisplayMap(Dictionary<(int x, int y), char> map, (int x, int y) currentCoords, Dictionary<(int x, int y), int> deadEnds)
         {
             Console.SetCursorPosition(0, 0);
-            Console.WriteLine(Utility.DisplayImage(Utility.ToJaggedArray(map, kvp => (kvp.Key.x, kvp.Key.y, kvp.Key == (0, 0) ? 'S' : kvp.Key == currentCoords ? 'C' : deadEnds?.ContainsKey(kvp.Key) == true ? 'D' : kvp.Value)), c => c));
+            Console.WriteLine(Utility.DisplayImage(map.ToJaggedArray(kvp => (kvp.Key.x, kvp.Key.y, kvp.Key == (0, 0) ? 'S' : kvp.Key == currentCoords ? 'C' : deadEnds?.ContainsKey(kvp.Key) == true ? 'D' : kvp.Value)), c => c));
         }
 
         private static IEnumerable<((int x, int y) coords, int direction)> GetNeighbors((int x, int y) coords)
