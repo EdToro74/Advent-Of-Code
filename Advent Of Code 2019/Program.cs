@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Advent_Of_Code_2019
 {
     class Program
     {
-        static void Main(string[] args)
+        private static void Main()
         {
             //Console.WriteLine(Day1.Part1(GetDayFile(1)));
             //Console.WriteLine(Day1.Part2(GetDayFile(1)));
@@ -40,8 +41,10 @@ namespace Advent_Of_Code_2019
             //Console.WriteLine(Day15.Part2(GetDayFile(15)));
             //Console.WriteLine(Day16.Part1(GetDayFile(16)));
             //Console.WriteLine(Day16.Part2(GetDayFile(16)));
-            Console.WriteLine(Day17.Part1(GetDayFile(17)));
-            Console.WriteLine(Day17.Part2(GetDayFile(17)));
+            //Console.WriteLine(Day17.Part1(GetDayFile(17)));
+            //Console.WriteLine(Day17.Part2(GetDayFile(17)));
+            Console.WriteLine(Day18.Part1(GetDayFile(18)));
+            Console.WriteLine(Day18.Part2(GetDayFile(18)));
         }
 
         static IEnumerable<string> GetDayFile(int day)
