@@ -24,30 +24,7 @@ namespace Advent_Of_Code_2019
             var low = oreStorage / costFor1 - 1_000;
             var high = oreStorage / costFor1 + 1_000_000;
 
-            while (low < high)
-            {
-                var mid = (low + high) / 2;
-                var guess = Convert("ORE", "FUEL", mid, reactions);
-                if (guess > oreStorage)
-                {
-                    high = mid;
-                }
-                else if (guess < oreStorage)
-                {
-                    if (mid == low)
-                    {
-                        break;
-                    }
-                    low = mid;
-                }
-                else
-                {
-                    low = mid;
-                    break;
-                }
-            }
-
-            return low;
+            return Utility.BinarySearch(low, high, guess => Convert("ORE", "FUEL", guess, reactions).CompareTo(oreStorage));
         }
 
         private static long Convert(string fromChemical, string toChemical, long amount, IEnumerable<Reaction> reactions)

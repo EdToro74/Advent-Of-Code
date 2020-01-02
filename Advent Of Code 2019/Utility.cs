@@ -61,6 +61,62 @@ namespace Advent_Of_Code_2019
             return display.ToString();
         }
 
+        public static int BinarySearch(int low, int high, Func<int, int> comparer)
+        {
+            while (low < high)
+            {
+                var mid = (low + high) / 2;
+                var guessResult = comparer(mid);
+                if (guessResult > 0)
+                {
+                    high = mid;
+                }
+                else if (guessResult < 0)
+                {
+                    if (mid == low)
+                    {
+                        break;
+                    }
+                    low = mid;
+                }
+                else
+                {
+                    low = mid;
+                    break;
+                }
+            }
+
+            return low;
+        }
+
+        public static long BinarySearch(long low, long high, Func<long, int> comparer)
+        {
+            while (low < high)
+            {
+                var mid = (low + high) / 2;
+                var guessResult = comparer(mid);
+                if (guessResult > 0)
+                {
+                    high = mid;
+                }
+                else if (guessResult < 0)
+                {
+                    if (mid == low)
+                    {
+                        break;
+                    }
+                    low = mid;
+                }
+                else
+                {
+                    low = mid;
+                    break;
+                }
+            }
+
+            return low;
+        }
+
         private static long LCM(long a, long b)
         {
             return Math.Abs(a * b) / GCD(a, b);
