@@ -6,56 +6,36 @@ namespace Advent_Of_Code_2019
 {
     public static class PathFinding
     {
-        public static (bool success, IEnumerable<T> path) FindPath<T>(T start, T target, Func<T, T, int> getCost, Func<T, IEnumerable<T>> getAccessibleNeighbors)
+        public static (bool success, IEnumerable<T> path) FindPath<T>(T start, T target, Func<T, T, int> getCost, Func<T, T, int> getHeuristic, Func<T, IEnumerable<T>> getAccessibleNeighbors)
         {
+            var cameFrom = new Dictionary<T, T>();
+            var costSoFar = new Dictionary<T, int>();
+
+            var frontier = new Priority_Queue.SimplePriorityQueue<T>();
+            frontier.Enqueue(start, 0);
+
+            costSoFar[start] = 0;
+
             T current = start;
 
-            var parents = new Dictionary<T, T>();
-            var costs = new Dictionary<T, int>();
-
-            var open = new HashSet<T>();
-            var closed = new HashSet<T>();
-            var g = 0;
-
-            open.Add(start);
-            costs[start] = 0;
-
-            while (open.Count > 0)
+            while (frontier.Count() > 0)
             {
-                current = open.OrderBy(t => costs[t]).First();
-
-                closed.Add(current);
-                open.Remove(current);
+                current = frontier.Dequeue();
 
                 if (current.Equals(target))
                 {
                     break;
                 }
 
-                g++;
-                var neighbors = getAccessibleNeighbors(current);
-                foreach (var neighbor in neighbors)
+                foreach (var next in getAccessibleNeighbors(current))
                 {
-                    if (closed.Contains(neighbor))
+                    var newCost = costSoFar[current] + getCost(current, next);
+                    if (!costSoFar.ContainsKey(next) || newCost < costSoFar[next])
                     {
-                        continue;
-                    }
-
-                    if (!open.Contains(neighbor))
-                    {
-                        var cost = getCost(neighbor, target);
-                        costs[neighbor] = g + cost;
-                        parents[neighbor] = current;
-                        open.Add(neighbor);
-                    }
-                    else
-                    {
-                        var cost = getCost(neighbor, target);
-                        if (g + cost < costs[neighbor])
-                        {
-                            costs[neighbor] = g + cost;
-                            parents[neighbor] = current;
-                        }
+                        costSoFar[next] = newCost;
+                        var priority = newCost + getHeuristic(next, target);
+                        frontier.Enqueue(next, priority);
+                        cameFrom[next] = current;
                     }
                 }
             }
@@ -66,8 +46,7 @@ namespace Advent_Of_Code_2019
             do
             {
                 path.Add(current);
-
-            } while (parents.TryGetValue(current, out current));
+            } while (cameFrom.TryGetValue(current, out current));
 
             return (success, path);
         }

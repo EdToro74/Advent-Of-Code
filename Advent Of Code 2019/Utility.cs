@@ -126,5 +126,10 @@ namespace Advent_Of_Code_2019
         {
             return b == 0 ? a : GCD(b, a % b);
         }
+
+        public static int ManhattanDistance((int x, int y) a, (int x, int y) b)
+        {
+            return Math.Abs(a.x - b.x) + Math.Abs(a.y - b.y);
+        }
     }
 }

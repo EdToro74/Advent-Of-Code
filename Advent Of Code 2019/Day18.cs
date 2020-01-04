@@ -85,7 +85,7 @@ namespace Advent_Of_Code_2019
                 {
                     var keyB = keys[j];
 
-                    var (success, path) = PathFinding.FindPath(keyLocations[keyA], keyLocations[keyB], GetCost, current => GetAccessibleNeighbors(current, map, keys.ToUpper()));
+                    var (success, path) = PathFinding.FindPath(keyLocations[keyA], keyLocations[keyB], (_, __) => 1, GetCost, current => GetAccessibleNeighbors(current, map, keys.ToUpper()));
                     if (!success)
                     {
                         continue;
@@ -182,7 +182,7 @@ namespace Advent_Of_Code_2019
                 if (destination.Value.isTeleport)
                 {
                     childKeyPaths = new Dictionary<char, Dictionary<char, (int steps, KeyMask keysNeeded, KeyMask keysCollected, bool isTeleport)>>();
-                    foreach(var kvp in keyPaths)
+                    foreach (var kvp in keyPaths)
                     {
                         childKeyPaths[kvp.Key] = new Dictionary<char, (int steps, KeyMask keysNeeded, KeyMask keysCollected, bool isTeleport)>(kvp.Value);
                     }
