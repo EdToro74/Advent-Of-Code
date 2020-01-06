@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Advent_Of_Code_2019
 {
@@ -82,17 +83,17 @@ namespace Advent_Of_Code_2019
             return ProcessProgramEnumerable(programState, () => inputs[inputPointer++]).ToArray();
         }
 
-        public static IEnumerable<long> ProcessProgramEnumerable(IEnumerable<string> programText, Func<long> inputHandler = null)
+        public static IEnumerable<long> ProcessProgramEnumerable(IEnumerable<string> programText, Func<long> inputHandler = null, CancellationTokenSource cancellationTokenSource = null)
         {
             var program = ParseProgram(programText);
 
-            return ProcessProgramEnumerable(program, inputHandler);
+            return ProcessProgramEnumerable(program, inputHandler, cancellationTokenSource);
         }
 
-        public static IEnumerable<long> ProcessProgramEnumerable(IProgramState program, Func<long> inputHandler)
+        public static IEnumerable<long> ProcessProgramEnumerable(IProgramState program, Func<long> inputHandler, CancellationTokenSource cancellationTokenSource = null)
         {
             var programState = (ProgramState)program;
-            while (true)
+            while (cancellationTokenSource == null || !cancellationTokenSource.IsCancellationRequested)
             {
                 var (instruction, parameters) = GetInstruction(programState);
 
