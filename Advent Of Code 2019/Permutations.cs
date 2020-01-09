@@ -24,7 +24,7 @@ namespace Advent_Of_Code_2019
             }
         }
 
-        public static IEnumerable<IEnumerable<T>> etPermutations<T>(this List<T> source)
+        public static IEnumerable<IEnumerable<T>> GetPermutations<T>(this List<T> source)
         {
             if (source == null)
             {
