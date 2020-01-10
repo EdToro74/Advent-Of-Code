@@ -10,97 +10,66 @@ namespace Advent_Of_Code_2019
         public static BigInteger Part1(IEnumerable<string> input)
         {
             var deckSize = 10007;
+            var iterations = 1;
+            var value = 2019;
 
-            var result = ProcessShuffle(2019, deckSize, input).Last();
-            var reverse = ProcessReverseShuffle(result, deckSize, input).Last();
+            var shuffle = input.Select(command =>
+            {
+                if (command.StartsWith("deal into"))
+                {
+                    return new LinearFunction(-1, -1);
+                }
+                else if (command.StartsWith("cut"))
+                {
+                    var cut = int.Parse(command.Split(' ').Last());
+                    return new LinearFunction(1, cut % deckSize * -1);
+                }
+                else if (command.StartsWith("deal with"))
+                {
+                    var increment = int.Parse(command.Split(' ').Last());
+                    return new LinearFunction(increment, 0);
+                }
+                else
+                {
+                    throw new Exception($"Unknown command: {command}");
+                }
+            }).Aggregate(LinearFunction.Aggregate);
 
-            return result % deckSize;
+            return shuffle.ExecuteTimes(value, iterations, deckSize);
         }
 
         public static BigInteger Part2(IEnumerable<string> input)
         {
             var deckSize = 119315717514047L;
             var position = 2020;
-            var reverse = ProcessReverseShuffle(position, deckSize, input).Last() % deckSize;
+            var iterations = 101741582076661L;
 
-            //101741582076661
-
-            return reverse;
-        }
-
-        private static IEnumerable<BigInteger> ProcessShuffle(BigInteger index, BigInteger deckSize, IEnumerable<string> commands)
-        {
-            var current = index;
-
-            foreach (var command in commands)
+            var shuffle = input.Reverse().Select(command =>
             {
                 if (command.StartsWith("deal into"))
                 {
-                    current = NewStack(current, deckSize);
-                }
-                else if (command.StartsWith("deal with"))
-                {
-                    var increment = int.Parse(command.Split(' ').Last());
-                    current = Increment(current, increment, deckSize);
+                    return new LinearFunction(-1, -1 - deckSize);
                 }
                 else if (command.StartsWith("cut"))
                 {
                     var cut = int.Parse(command.Split(' ').Last());
-                    current = Cut(current, cut, deckSize);
-                }
-                else
-                {
-                    throw new Exception("Unknown command");
-                }
-
-                yield return current;
-            }
-        }
-
-        private static IEnumerable<BigInteger> ProcessReverseShuffle(BigInteger index, BigInteger deckSize, IEnumerable<string> commands)
-        {
-            var current = index;
-
-            foreach (var command in commands.Reverse())
-            {
-                if (command.StartsWith("deal into"))
-                {
-                    current = NewStackReverse(current, deckSize);
+                    return new LinearFunction(1, cut % deckSize);
                 }
                 else if (command.StartsWith("deal with"))
                 {
                     var increment = int.Parse(command.Split(' ').Last());
-                    current = IncrementReverse(current, increment, deckSize);
-                }
-                else if (command.StartsWith("cut"))
-                {
-                    var cut = int.Parse(command.Split(' ').Last());
-                    current = CutReverse(current, cut, deckSize);
+                    BigInteger z = ModInverse(increment, deckSize);
+
+                    return new LinearFunction(z % deckSize, 0);
                 }
                 else
                 {
-                    throw new Exception("Unknown command");
+                    throw new Exception($"Unknown command: {command}");
                 }
+            }).Aggregate(LinearFunction.Aggregate);
 
-                yield return current;
-            }
+            return shuffle.ExecuteTimes(position, iterations, deckSize);
         }
-
-        private static BigInteger Cut(BigInteger index, int cutSize, BigInteger deckSize) => index - cutSize;
-
-        private static BigInteger CutReverse(BigInteger index, int cutSize, BigInteger deckSize) => index + cutSize;
-
-        private static BigInteger Increment(BigInteger index, int increment, BigInteger deckSize) => index * increment;
-
-        private static BigInteger IncrementReverse(BigInteger index, int increment, BigInteger deckSize)
-        {
-            var modInverse = ModInverse2(increment, deckSize);
-            return (modInverse % deckSize) * index;
-        }
-
-        private static BigInteger NewStack(BigInteger index, BigInteger deckSize) => -index - 1;
-
-        private static BigInteger NewStackReverse(BigInteger index, BigInteger deckSize) => -index - (1 - deckSize);
 
         private static BigInteger ModInverse(BigInteger a, BigInteger n)
         {
@@ -119,18 +88,45 @@ namespace Advent_Of_Code_2019
             return v;
         }
 
-        private static BigInteger ModInverse2(BigInteger a, BigInteger m)
+        class LinearFunction
         {
-            a %= m;
-            for (int x = 1; x < m; x++)
+            public BigInteger K { get; }
+            public BigInteger M { get; }
+
+            public LinearFunction(BigInteger k, BigInteger m)
             {
-                if (a * x % m == 1)
-                {
-                    return x;
-                }
+                K = k;
+                M = m;
             }
 
-            return 1;
+            public static LinearFunction Id => new LinearFunction(1, 0);
+
+            public BigInteger Apply(BigInteger x) => x * K + M;
+
+            public static LinearFunction Aggregate(LinearFunction f, LinearFunction g) => new LinearFunction(g.K * f.K, g.K * f.M + g.M);
+
+            public BigInteger ExecuteTimes(BigInteger x, BigInteger numberOfTimes, BigInteger deckSize)
+            {
+                LinearFunction ExecuteTimesInternal(BigInteger k, BigInteger m, BigInteger iterations)
+                {
+                    if (iterations == 0)
+                    {
+                        return LinearFunction.Id;
+                    }
+                    else if (iterations % 2 == 0)
+                    {
+                        return ExecuteTimesInternal(k * k % deckSize, (k * m + m) % deckSize, iterations / 2);
+                    }
+                    else
+                    {
+                        var tail = ExecuteTimesInternal(k, m, iterations - 1);
+                        return new LinearFunction(k * tail.K % deckSize, (k * tail.M + m) % deckSize);
+                    }
+                }
+
+                var func = ExecuteTimesInternal(K, M, numberOfTimes);
+                return (((func.Apply(x) + deckSize) % deckSize) + deckSize) % deckSize;
+            }
         }
     }
 }
