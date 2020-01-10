@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Combinatorics.Collections;
 
 namespace Advent_Of_Code_2019
 {
@@ -24,16 +22,17 @@ namespace Advent_Of_Code_2019
 
             var maxSignal = 0L;
 
-            foreach (var permutation in new Permutations<int>(phases))
+            foreach (var permutation in Permutations.GetPermutations(phases))
             {
-                var amps = new IEnumerator<long>[permutation.Count];
-                var inputs = new Queue<long>[permutation.Count];
-                var moveNextResults = new bool[permutation.Count];
+                var size = permutation.Count();
+                var amps = new IEnumerator<long>[size];
+                var inputs = new Queue<long>[size];
+                var moveNextResults = new bool[size];
 
-                for (var i = 0; i < permutation.Count; i++)
+                for (var i = 0; i < size; i++)
                 {
                     inputs[i] = new Queue<long>();
-                    inputs[i].Enqueue(permutation[i]);
+                    inputs[i].Enqueue(permutation.ElementAt(i));
                     if (i == 0)
                     {
                         inputs[i].Enqueue(0);
