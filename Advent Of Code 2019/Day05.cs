@@ -10,7 +10,7 @@ namespace Advent_Of_Code_2019
             var inputs = new[] { 1L };
 
             var sb = new StringBuilder();
-            foreach(var output in IntCodeProcessor.ProcessProgram(input, inputs))
+            foreach (var output in IntCodeProcessor.ProcessProgram(input, inputs))
             {
                 sb.Append(output);
             }

@@ -63,7 +63,7 @@ namespace Advent_Of_Code_2019
             {
                 var toMake = (long)Math.Ceiling(1.0 * chemicalsNeeded[reaction.Output.Chemical] / reaction.Output.Amount);
 
-                foreach(var input in reaction.Inputs)
+                foreach (var input in reaction.Inputs)
                 {
                     chemicalsNeeded.TryGetValue(input.Chemical, out var existingAmount);
                     chemicalsNeeded[input.Chemical] = existingAmount + input.Amount * toMake;

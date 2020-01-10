@@ -128,7 +128,7 @@ namespace Advent_Of_Code_2019
                             currentInventoryAttempt = inventoryAttempts.Dequeue();
                         }
 
-                        foreach(var item in inventory)
+                        foreach (var item in inventory)
                         {
                             if (!currentInventoryAttempt.Contains(item))
                             {
@@ -139,7 +139,7 @@ namespace Advent_Of_Code_2019
 
                         if (string.IsNullOrWhiteSpace(command))
                         {
-                            foreach(var item in currentNode.Items)
+                            foreach (var item in currentNode.Items)
                             {
                                 if (currentInventoryAttempt.Contains(item))
                                 {
@@ -205,7 +205,7 @@ namespace Advent_Of_Code_2019
                 if (room.EndsWith(" on the keypad at the main airlock.\"\n"))
                 {
                     Console.WriteLine("Final inventory: ");
-                    foreach(var item in inventory)
+                    foreach (var item in inventory)
                     {
                         Console.WriteLine(item);
                     }

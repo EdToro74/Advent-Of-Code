@@ -32,7 +32,7 @@ namespace Advent_Of_Code_2019
             var yOffset = -yMin;
 
             var result = new TOut[yRange, xRange];
-            foreach(var (x, y, value) in objects)
+            foreach (var (x, y, value) in objects)
             {
                 result[y + yOffset, x + xOffset] = value;
             }
@@ -40,7 +40,7 @@ namespace Advent_Of_Code_2019
             return result;
         }
 
-        public static string DisplayImage<T>(T[,] image, Func<T,char> valueMapper)
+        public static string DisplayImage<T>(T[,] image, Func<T, char> valueMapper)
         {
             var height = image.GetLength(0);
             var width = image.GetLength(1);

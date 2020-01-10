@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Advent_Of_Code_2019
+﻿namespace Advent_Of_Code_2019
 {
     public static class PowerSet
     {
