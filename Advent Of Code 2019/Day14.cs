@@ -55,9 +55,10 @@ namespace Advent_Of_Code_2019
                 }
             }
 
-            var chemicalsNeeded = new Dictionary<string, long>();
-
-            chemicalsNeeded[toChemical] = amount;
+            var chemicalsNeeded = new Dictionary<string, long>
+            {
+                [toChemical] = amount
+            };
 
             foreach (var reaction in ordered)
             {

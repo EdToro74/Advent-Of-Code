@@ -11,7 +11,7 @@ namespace Advent_Of_Code_2019
             var width = input.First().Length;
             var height = input.Count();
 
-            var grid = input.SelectMany(s => s.Select(c => c == '#' ? true : false)).ToJaggedArray(b => (index % width, index++ / height, b));
+            var grid = input.SelectMany(s => s.Select(c => c == '#')).ToJaggedArray(b => (index % width, index++ / height, b));
 
             var seen = new HashSet<int>();
 
@@ -64,7 +64,7 @@ namespace Advent_Of_Code_2019
             var width = 5;
             var height = 5;
 
-            var inputGrid = input.SelectMany(s => s.Select(c => c == '#' ? true : false)).ToArray();
+            var inputGrid = input.SelectMany(s => s.Select(c => c == '#')).ToArray();
 
             var grids = new Dictionary<int, bool[]>() { { 0, inputGrid } };
 
@@ -141,7 +141,7 @@ namespace Advent_Of_Code_2019
             return grids.Values.Sum(g => g.Count(c => c));
         }
 
-        private static Dictionary<int, IEnumerable<(int levelModifier, int index)>> _neighbors = new Dictionary<int, IEnumerable<(int levelModifier, int index)>>()
+        private static readonly Dictionary<int, IEnumerable<(int levelModifier, int index)>> _neighbors = new Dictionary<int, IEnumerable<(int levelModifier, int index)>>()
         {
             { 1, new[] {(-1, 12), (0, 6), (0, 2), (-1, 8)} },
             { 2, new[] {(0, 1), (0, 7), (0, 3), (-1, 8)} },

@@ -21,8 +21,10 @@ namespace Advent_Of_Code_2019
 
             var start = FindLocation(map, '@');
 
-            var keyPaths = new Dictionary<char, Dictionary<char, (int steps, KeyMask keysNeeded, KeyMask keysCollected, bool isTeleport)>>();
-            keyPaths['_'] = new Dictionary<char, (int steps, KeyMask keysNeeded, KeyMask keysCollected, bool isTeleport)>();
+            var keyPaths = new Dictionary<char, Dictionary<char, (int steps, KeyMask keysNeeded, KeyMask keysCollected, bool isTeleport)>>
+            {
+                ['_'] = new Dictionary<char, (int steps, KeyMask keysNeeded, KeyMask keysCollected, bool isTeleport)>()
+            };
             FillKeyPaths(map, keys, keyLocations, keyPaths);
             _cache.Clear();
             var result = GatherAllKeys('@', keys, keyPaths, new KeyMask('@'));
@@ -41,8 +43,8 @@ namespace Advent_Of_Code_2019
 
             var originalStart = FindLocation(map, '@');
             map[originalStart.y] = map[originalStart.y].Replace(".@.", "###");
-            map[originalStart.y - 1] = map[originalStart.y - 1].Substring(0, originalStart.x - 1) + "@#{" + map[originalStart.y - 1].Substring(originalStart.x + 2);
-            map[originalStart.y + 1] = map[originalStart.y + 1].Substring(0, originalStart.x - 1) + "|#}" + map[originalStart.y + 1].Substring(originalStart.x + 2);
+            map[originalStart.y - 1] = map[originalStart.y - 1].Substring(0, originalStart.x - 1) + "@#{" + map[originalStart.y - 1][(originalStart.x + 2)..];
+            map[originalStart.y + 1] = map[originalStart.y + 1].Substring(0, originalStart.x - 1) + "|#}" + map[originalStart.y + 1][(originalStart.x + 2)..];
 
             foreach (var line in map)
             {
@@ -310,6 +312,16 @@ namespace Advent_Of_Code_2019
                     shift = 31;
                 }
                 return shift;
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is KeyMask mask && Equals(mask);
+            }
+
+            public override int GetHashCode()
+            {
+                return _mask.GetHashCode();
             }
         }
 

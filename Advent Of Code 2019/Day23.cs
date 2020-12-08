@@ -171,8 +171,8 @@ namespace Advent_Of_Code_2019
         private class NetworkState
         {
             private int _state = 0;
-            private Queue<long> _queue = new Queue<long>();
-            private int _id;
+            private readonly Queue<long> _queue = new Queue<long>();
+            private readonly int _id;
             private long _lastX = 0;
 
             public NetworkState(int id) => _id = id;

@@ -68,10 +68,5 @@ namespace Advent_Of_Code_2019
         {
             return File.ReadLines(path);
         }
-
-        static IEnumerable<string> SplitString(string input)
-        {
-            return input.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
-        }
     }
 }

@@ -9,9 +9,11 @@ namespace Advent_Of_Code_2019
         public static int Part1(IEnumerable<string> input)
         {
             Console.CursorVisible = false;
-            Console.WindowHeight = Console.LargestWindowHeight - 3;
-            Console.SetWindowPosition(0, 0);
-
+            if (OperatingSystem.IsWindows())
+            {
+                Console.WindowHeight = Console.LargestWindowHeight - 3;
+                Console.SetWindowPosition(0, 0);
+            }
             var (map, deadEnds) = TraverseMap(input);
 
             var stepCount = 0;
@@ -36,13 +38,18 @@ namespace Advent_Of_Code_2019
         public static int Part2(IEnumerable<string> input)
         {
             Console.CursorVisible = false;
-            Console.WindowHeight = Console.LargestWindowHeight - 3;
-            Console.SetWindowPosition(0, 0);
+            if (OperatingSystem.IsWindows())
+            {
+                Console.WindowHeight = Console.LargestWindowHeight - 3;
+                Console.SetWindowPosition(0, 0);
+            }
 
             var (map, _) = TraverseMap(input, true);
 
-            var oxygenated = new HashSet<(int x, int y)>();
-            oxygenated.Add(map.Single(tile => tile.Value == 'O').Key);
+            var oxygenated = new HashSet<(int x, int y)>
+            {
+                map.Single(tile => tile.Value == 'O').Key
+            };
 
             var producers = new HashSet<(int x, int y)>(oxygenated);
 
@@ -67,12 +74,6 @@ namespace Advent_Of_Code_2019
             }
 
             return steps;
-        }
-
-        private static void DisplayMap(Dictionary<(int x, int y), char> map, (int x, int y) currentCoords, Dictionary<(int x, int y), int> deadEnds)
-        {
-            Console.SetCursorPosition(0, 0);
-            Console.WriteLine(Utility.DisplayImage(map.ToJaggedArray(kvp => (kvp.Key.x, kvp.Key.y, kvp.Key == (0, 0) ? 'S' : kvp.Key == currentCoords ? 'C' : deadEnds?.ContainsKey(kvp.Key) == true ? 'D' : kvp.Value)), c => c));
         }
 
         private static IEnumerable<((int x, int y) coords, int direction)> GetNeighbors((int x, int y) coords)

@@ -9,8 +9,11 @@ namespace Advent_Of_Code_2019
         public static int Part1(IEnumerable<string> input)
         {
             Console.CursorVisible = false;
-            Console.WindowHeight = Console.LargestWindowHeight - 3;
-            Console.SetWindowPosition(0, 0);
+            if (OperatingSystem.IsWindows())
+            {
+                Console.WindowHeight = Console.LargestWindowHeight - 3;
+                Console.SetWindowPosition(0, 0);
+            }
 
             var output = IntCodeProcessor.ProcessProgram(input);
 
@@ -43,8 +46,11 @@ namespace Advent_Of_Code_2019
         public static long Part2(IEnumerable<string> input)
         {
             Console.CursorVisible = false;
-            Console.WindowHeight = Console.LargestWindowHeight - 3;
-            Console.SetWindowPosition(0, 0);
+            if (OperatingSystem.IsWindows())
+            {
+                Console.WindowHeight = Console.LargestWindowHeight - 3;
+                Console.SetWindowPosition(0, 0);
+            }
 
             var program = IntCodeProcessor.ParseProgram(input);
             program.SetMemory(0, 2);
