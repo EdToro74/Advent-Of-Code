@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Advent_Of_Code_2019
+namespace Utility
 {
     public static class Permutations
     {

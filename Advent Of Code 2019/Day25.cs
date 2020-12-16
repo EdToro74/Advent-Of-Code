@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Utility;
 
 namespace Advent_Of_Code_2019
 {
@@ -276,11 +277,11 @@ namespace Advent_Of_Code_2019
                 }
                 else if (inExits)
                 {
-                    exits.Add(line.Substring(2));
+                    exits.Add(line[2..]);
                 }
                 else if (inItems)
                 {
-                    items.Add(line.Substring(2));
+                    items.Add(line[2..]);
                 }
             }
 
@@ -303,9 +304,9 @@ namespace Advent_Of_Code_2019
             public IEnumerable<string> Items { get; }
             public IEnumerable<(string direction, Node location)> Neighbors => _neighbors.Select(kvp => (kvp.Key, kvp.Value));
 
-            private HashSet<string> _exitsTaken = new HashSet<string>();
+            private readonly HashSet<string> _exitsTaken = new HashSet<string>();
 
-            private Dictionary<string, Node> _neighbors = new Dictionary<string, Node>();
+            private readonly Dictionary<string, Node> _neighbors = new Dictionary<string, Node>();
 
             public Node(string name, IEnumerable<string> exits, IEnumerable<string> items)
             {

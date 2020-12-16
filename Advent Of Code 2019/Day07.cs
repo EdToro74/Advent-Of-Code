@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Utility;
 
 namespace Advent_Of_Code_2019
 {
