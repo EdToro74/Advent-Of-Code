@@ -7,7 +7,7 @@ namespace Advent_Of_Code_2020
     {
         static void Main()
         {
-            Day16.Run();
+            Day18.Run();
             Console.WriteLine("Complete!");
         }
     }

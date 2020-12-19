@@ -17,7 +17,7 @@ namespace Advent_Of_Code_2020.Days
             var invalidNumber = 0L;
             foreach (var item in input.Skip(bufferSize).Select((item, index) => (target: item, index)))
             {
-                var result = Utility.Utility.FindTarget(buffer.ToArray(), item.target, 2);
+                var result = buffer.ToArray().AsSpan().FindTarget(item.target, 2);
                 if (!result.found)
                 {
                     Console.WriteLine($"Could not find two numbers that add up to {item.target} at index {item.index}");
