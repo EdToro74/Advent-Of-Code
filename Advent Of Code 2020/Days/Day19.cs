@@ -18,48 +18,100 @@ namespace Advent_Of_Code_2020.Days
                 new RuleOr()
             };
 
-            var rules = new Dictionary<int, Rule>();
+            Part1(input, availableRules);
 
-            var stage = 0;
+            Part2(input, availableRules);
+        }
+
+        public static void Part1(IEnumerable<string> input, Rule[] availableRules)
+        {
+            var rules = ParseRules(input, availableRules);
 
             var matched = 0;
 
-            foreach (var line in input)
+            foreach (var line in input.Skip(rules.Count + 1))
             {
-                if (stage == 0)
+                if (Evaluate(line, 0, rules) == line.Length)
                 {
-                    if (string.IsNullOrWhiteSpace(line))
-                    {
-                        stage++;
-                        continue;
-                    }
-
-                    var parts = line.Split(':');
-                    var id = int.Parse(parts[0]);
-                    var ruleText = parts[1].Trim();
-
-                    if (id == 8)
-                    {
-                        ruleText = "42 8 | 42";
-                    }
-                    //else if (id == 11) ruleText = "42 11 31 | 42 31";
-
-                    var rule = availableRules.Select(ar => ar.Parse(id, ruleText)).Where(r => r != null).Single();
-                    rules[id] = rule;
+                    matched++;
                 }
-                else if (stage == 1)
+            }
+
+            Console.WriteLine($"Part 1: {matched} matched rule 0");
+        }
+
+        public static void Part2(IEnumerable<string> input, Rule[] availableRules)
+        {
+            var rules = ParseRules(input, availableRules);
+
+            var matched = 0;
+
+            const int matchSize = 8;
+
+            foreach (var line in input.Skip(rules.Count + 1))
+            {
+                if (Evaluate(line, 0, rules) == line.Length)
                 {
-                    if (Evaluate(line, 0, rules))
+                    matched++;
+                    continue;
+                }
+
+                if (line.Length % matchSize != 0)
+                {
+                    continue;
+                }
+
+                var num42s = 0;
+                var currentIndex = 0;
+                var consumed = 0;
+                while ((consumed = Evaluate(line[currentIndex..], 42, rules)) > 0)
+                {
+                    num42s++;
+                    currentIndex += consumed;
+                }
+
+                if (num42s > 1)
+                {
+                    var num31s = 0;
+                    while ((consumed = Evaluate(line[currentIndex..], 31, rules)) > 0)
+                    {
+                        num31s++;
+                        currentIndex += consumed;
+                    }
+
+                    if (currentIndex == line.Length && num31s > 0 && num42s > num31s)
                     {
                         matched++;
                     }
                 }
             }
 
-            Console.WriteLine($"{matched} matched rule 0");
+            Console.WriteLine($"Part 2: {matched} matched rule 0");
         }
 
-        public static bool Evaluate(string line, int ruleId, IDictionary<int, Rule> rules)
+        public static Dictionary<int, Rule> ParseRules(IEnumerable<string> input, Rule[] availableRules)
+        {
+            var rules = new Dictionary<int, Rule>();
+
+            foreach (var line in input)
+            {
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    break;
+                }
+
+                var parts = line.Split(':');
+                var id = int.Parse(parts[0]);
+                var ruleText = parts[1].Trim();
+
+                var rule = availableRules.Select(ar => ar.Parse(id, ruleText)).Where(r => r != null).Single();
+                rules[id] = rule;
+            }
+
+            return rules;
+        }
+
+        public static int Evaluate(string line, int ruleId, IDictionary<int, Rule> rules)
         {
             var rule = rules[ruleId];
 
@@ -96,7 +148,7 @@ namespace Advent_Of_Code_2020.Days
                 }
             }
 
-            return lastResult.Consumed == line.Length;
+            return lastResult.Consumed;
         }
 
         public class EvalState
@@ -105,6 +157,8 @@ namespace Advent_Of_Code_2020.Days
             public IEnumerator<RuleResult> RuleBehavior { get; init; }
             public RuleResult LastResult { get; set; }
             public int CurrentIndex { get; set; }
+
+            public override string ToString() => $"RuleId: {RuleId} CurrentIndex: {CurrentIndex} Consumed: {LastResult.Consumed} SubRule: {LastResult.SubRule}";
         }
 
         public class RuleResult
@@ -129,6 +183,8 @@ namespace Advent_Of_Code_2020.Days
             public abstract Rule Parse(int id, string input);
 
             public abstract IEnumerable<RuleResult> Evaluate(string input, IDictionary<int, Rule> rules);
+
+            public override string ToString() => $"{GetType().Name}: {Id}";
         }
 
         public class CharacterRule : Rule
@@ -182,6 +238,7 @@ namespace Advent_Of_Code_2020.Days
             public override IEnumerable<RuleResult> Evaluate(string input, IDictionary<int, Rule> rules)
             {
                 var currentIndex = 0;
+
                 foreach (var rule in _ruleIds.Select(id => rules[id]))
                 {
                     if (currentIndex >= input.Length)
@@ -228,7 +285,7 @@ namespace Advent_Of_Code_2020.Days
                 {
                     var factory = new RuleRun();
                     var leftRule = factory.Parse(id * 1000 + 1, match.Groups["ruleRun"].Captures[0].Value);
-                    var rightRule = factory.Parse(id * 1000 + 1, match.Groups["ruleRun"].Captures[1].Value);
+                    var rightRule = factory.Parse(id * 1000 + 2, match.Groups["ruleRun"].Captures[1].Value);
 
                     if (leftRule != null && rightRule != null)
                     {
@@ -241,16 +298,12 @@ namespace Advent_Of_Code_2020.Days
 
             public override IEnumerable<RuleResult> Evaluate(string input, IDictionary<int, Rule> rules)
             {
-                var childResult = new RuleResult { SubRule = _leftRule };
+                var leftResult = new RuleResult { SubRule = _leftRule };
+                yield return leftResult;
+                var rightResult = new RuleResult { SubRule = _rightRule };
+                yield return rightResult;
 
-                yield return childResult;
-                if (childResult.Consumed == 0)
-                {
-                    childResult = new RuleResult { SubRule = _rightRule };
-                    yield return childResult;
-                }
-
-                yield return new RuleResult { Consumed = childResult.Consumed };
+                yield return new RuleResult { Consumed = Math.Max(leftResult.Consumed, rightResult.Consumed) };
             }
         }
     }
