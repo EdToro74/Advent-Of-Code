@@ -12,6 +12,16 @@
             }
         }
 
+        public static IEnumerable<T2> EnumeratePairs<T, T2>(this IEnumerable<T> enumerable, Func<T, T, T2> selector)
+        {
+            var queue = new Queue<T>(enumerable);
+
+            while (queue.Count > 1)
+            {
+                yield return selector(queue.Dequeue(), queue.Peek());
+            }
+        }
+
         public static T SingleOrFallback<T>(this IEnumerable<T> source, T fallback)
         {
             T value = fallback;
