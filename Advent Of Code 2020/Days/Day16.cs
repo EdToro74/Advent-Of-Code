@@ -31,11 +31,16 @@ namespace Advent_Of_Code_2020.Days
                         rules.Add(Rule.Parse(line));
                         break;
                     case 1:
-                        if (myTicket != null) throw new InvalidOperationException("Already read my ticket");
+                        if (myTicket != null)
+                        {
+                            throw new InvalidOperationException("Already read my ticket");
+                        }
+
                         if (line.StartsWith("your"))
                         {
                             continue;
                         }
+
                         myTicket = line.Split(',').Select(s => int.Parse(s)).ToArray();
                         break;
                     case 2:
@@ -43,13 +48,21 @@ namespace Advent_Of_Code_2020.Days
                         {
                             continue;
                         }
+
                         nearbyTickets.Add(line.Split(',').Select(s => int.Parse(s)).ToArray());
                         break;
                 }
             }
 
-            if (nearbyTickets.Any(ticket => ticket.Length != myTicket.Length)) throw new InvalidOperationException("Not all tickets have the same value count");
-            if (rules.Count != myTicket.Length) throw new InvalidOperationException("Rule count does not equal ticket value count");
+            if (nearbyTickets.Any(ticket => ticket.Length != myTicket.Length))
+            {
+                throw new InvalidOperationException("Not all tickets have the same value count");
+            }
+
+            if (rules.Count != myTicket.Length)
+            {
+                throw new InvalidOperationException("Rule count does not equal ticket value count");
+            }
 
             var invalidNumbers = nearbyTickets.SelectMany(t => t).Where(value => !rules.Any(rule => rule.IsValueValid(value)));
             Console.WriteLine($"Sum: {invalidNumbers.Sum()}");
@@ -76,10 +89,13 @@ namespace Advent_Of_Code_2020.Days
                 }
             } while (progress);
 
-            if (takenRules.Count != rules.Count) throw new InvalidOperationException("Ambiguous answer");
+            if (takenRules.Count != rules.Count)
+            {
+                throw new InvalidOperationException("Ambiguous answer");
+            }
 
             var value = 1L;
-            foreach(var rule in rules.Where(rule => rule.Name.StartsWith("departure")))
+            foreach (var rule in rules.Where(rule => rule.Name.StartsWith("departure")))
             {
                 value *= myTicket[takenRules[rule]];
             }
@@ -87,15 +103,12 @@ namespace Advent_Of_Code_2020.Days
             Console.WriteLine($"Product of departure fields: {value}");
         }
 
-        class Rule
+        private class Rule
         {
             public string Name { get; init; }
             public IEnumerable<(int min, int max)> Ranges { get; init; }
 
-            public bool IsValueValid(int value)
-            {
-                return Ranges.Any(r => value >= r.min && value <= r.max);
-            }
+            public bool IsValueValid(int value) => Ranges.Any(r => value >= r.min && value <= r.max);
 
             public static Rule Parse(string input)
             {

@@ -15,7 +15,7 @@ namespace Advent_Of_Code_2019
             PrepareNetwork(input, copies, out var networkStates, out var nodes, out var cancellationTokenSource);
 
             ThreadPool.GetMinThreads(out var workerMin, out var cpMin);
-            ThreadPool.SetMinThreads(copies, cpMin);
+            _ = ThreadPool.SetMinThreads(copies, cpMin);
 
             var tasks = new Task<long>[copies];
 
@@ -35,9 +35,9 @@ namespace Advent_Of_Code_2019
                         }
 
                         var address = enumerator.Current;
-                        enumerator.MoveNext();
+                        _ = enumerator.MoveNext();
                         var x = enumerator.Current;
-                        enumerator.MoveNext();
+                        _ = enumerator.MoveNext();
                         var y = enumerator.Current;
 
                         //Console.WriteLine($"Node {node.id} sending {x}, {y} to {address}");
@@ -70,7 +70,7 @@ namespace Advent_Of_Code_2019
             var tasks = new Task[copies];
 
             ThreadPool.GetMinThreads(out var workerMin, out var cpMin);
-            ThreadPool.SetMinThreads(copies + 1, cpMin);
+            _ = ThreadPool.SetMinThreads(copies + 1, cpMin);
 
             var natLock = new object();
             var natMessage = (x: -1L, y: -1L);
@@ -92,9 +92,9 @@ namespace Advent_Of_Code_2019
                         }
 
                         var address = enumerator.Current;
-                        enumerator.MoveNext();
+                        _ = enumerator.MoveNext();
                         var x = enumerator.Current;
-                        enumerator.MoveNext();
+                        _ = enumerator.MoveNext();
                         var y = enumerator.Current;
 
                         //Console.WriteLine($"Node {node.id} sending {x}, {y} to {address}");
@@ -133,7 +133,7 @@ namespace Advent_Of_Code_2019
                                 return natMessage.y;
                             }
 
-                            natYs.Add(natMessage.y);
+                            _ = natYs.Add(natMessage.y);
                             //Console.WriteLine($"Network idle, sending {natMessage} to 0");
                             networkStates[0].QueueMessage(natMessage.x, natMessage.y);
                             natMessage = (-1, -1);

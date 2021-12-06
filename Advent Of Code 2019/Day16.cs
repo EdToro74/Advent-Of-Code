@@ -27,6 +27,7 @@ namespace Advent_Of_Code_2019
                         {
                             continue;
                         }
+
                         value += digits[inputIndex] * operation;
                     }
 

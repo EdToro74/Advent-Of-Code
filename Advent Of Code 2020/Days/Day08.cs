@@ -32,7 +32,7 @@ namespace Advent_Of_Code_2020.Days
             Console.WriteLine($"Accumulator: {part1.gameState.Accumulator}");
 
             // Change each nop to jmp or jmp to nop one by one
-            for(var i = 0; i < input.Count; i++)
+            for (var i = 0; i < input.Count; i++)
             {
                 if (input[i].StartsWith("nop"))
                 {
@@ -43,8 +43,10 @@ namespace Advent_Of_Code_2020.Days
                         Console.WriteLine($"Adjusting instruction {i} fixed the program.  Accumulator: {attempt.gameState.Accumulator}");
                         return;
                     }
+
                     input[i] = input[i].Replace("jmp ", "nop ");
                 }
+
                 if (input[i].StartsWith("jmp"))
                 {
                     input[i] = input[i].Replace("jmp ", "nop ");
@@ -54,6 +56,7 @@ namespace Advent_Of_Code_2020.Days
                         Console.WriteLine($"Adjusting instruction {i} fixed the program.  Accumulator: {attempt.gameState.Accumulator}");
                         return;
                     }
+
                     input[i] = input[i].Replace("nop ", "jmp ");
                 }
             }
@@ -72,10 +75,7 @@ namespace Advent_Of_Code_2020.Days
 
         public bool HasTerminated => _gameState.InstructionIndex == _instructions.Count;
 
-        private GameConsole(List<Instruction> instructions)
-        {
-            _instructions = instructions;
-        }
+        private GameConsole(List<Instruction> instructions) => _instructions = instructions;
 
         public static GameConsole Parse(IEnumerable<string> code)
         {
@@ -111,22 +111,16 @@ namespace Advent_Of_Code_2020.Days
         {
             var instructionIndex = _gameState.InstructionIndex;
             _instructions[instructionIndex].Execute(_gameState);
-            _visitedIndexes.Add(instructionIndex);
+            _ = _visitedIndexes.Add(instructionIndex);
         }
 
         private abstract class Instruction
         {
-            public Instruction(int argument)
-            {
-                Argument = argument;
-            }
+            public Instruction(int argument) => Argument = argument;
 
             public int Argument { get; private set; }
 
-            public virtual void Execute(GameState gameState)
-            {
-                gameState.JumpRelative(1);
-            }
+            public virtual void Execute(GameState gameState) => gameState.JumpRelative(1);
         }
 
         private class NoOp : Instruction
@@ -155,10 +149,7 @@ namespace Advent_Of_Code_2020.Days
             {
             }
 
-            public override void Execute(GameState gameState)
-            {
-                gameState.JumpRelative(Argument);
-            }
+            public override void Execute(GameState gameState) => gameState.JumpRelative(Argument);
         }
     }
 

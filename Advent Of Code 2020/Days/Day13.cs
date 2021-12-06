@@ -38,16 +38,21 @@ namespace Advent_Of_Code_2020.Days
 
         public static long MultiplicativeInverse(long a, long m)
         {
-            if (m == 1) return 0;
-            long m0 = m;
+            if (m == 1)
+            {
+                return 0;
+            }
+
+            var m0 = m;
             (long x, long y) = (1, 0);
 
             while (a > 1)
             {
-                long q = a / m;
+                var q = a / m;
                 (a, m) = (m, a % m);
                 (x, y) = (y, x - q * y);
             }
+
             return x < 0 ? x + m0 : x;
         }
     }

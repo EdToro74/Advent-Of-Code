@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace Advent_Of_Code_2019
 {
-    static class IntCodeProcessor
+    internal static class IntCodeProcessor
     {
         public interface IProgramState
         {
@@ -21,10 +21,7 @@ namespace Advent_Of_Code_2019
             public long RelativeIndex { get; set; }
             public long InstructionPointer { get; set; }
 
-            public ProgramState(long[] program)
-            {
-                Program = program;
-            }
+            public ProgramState(long[] program) => Program = program;
 
             public void SetMemory(long index, long value)
             {
@@ -46,7 +43,7 @@ namespace Advent_Of_Code_2019
                 }
                 else
                 {
-                    Memory.TryGetValue(index, out var value);
+                    _ = Memory.TryGetValue(index, out var value);
                     return value;
                 }
             }
@@ -65,10 +62,7 @@ namespace Advent_Of_Code_2019
             return new ProgramState(program);
         }
 
-        public static IProgramState CopyProgram(IProgramState programState)
-        {
-            return programState.Copy();
-        }
+        public static IProgramState CopyProgram(IProgramState programState) => programState.Copy();
 
         public static long[] ProcessProgram(IEnumerable<string> programText, params long[] inputs)
         {
@@ -130,6 +124,7 @@ namespace Advent_Of_Code_2019
                         {
                             programState.InstructionPointer += 3;
                         }
+
                         break;
                     case 6:
                         // Jump If False
@@ -141,6 +136,7 @@ namespace Advent_Of_Code_2019
                         {
                             programState.InstructionPointer += 3;
                         }
+
                         break;
                     case 7:
                         // Less Than

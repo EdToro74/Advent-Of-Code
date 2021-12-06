@@ -71,7 +71,7 @@ namespace Advent_Of_Code_2020.Days
                                 {
                                     foreach (var offset in dragon[dragonIndex])
                                     {
-                                        dragonTiles.Add(index - (image.Size * dragonIndex) + offset);
+                                        _ = dragonTiles.Add(index - (image.Size * dragonIndex) + offset);
                                     }
                                 }
                             }
@@ -114,6 +114,7 @@ namespace Advent_Of_Code_2020.Days
                             {
                                 topNeighbors.Add((potentialNeighbor.Id, j));
                             }
+
                             if (CanFitLeft(tile.Arrangements[i], potentialNeighbor.Arrangements[j], tile.Size))
                             {
                                 leftNeighbors.Add((potentialNeighbor.Id, j));
@@ -235,7 +236,7 @@ namespace Advent_Of_Code_2020.Days
             }
         }
 
-        class Tile
+        private class Tile
         {
             public int Id { get; init; }
             public int Size { get; init; }
@@ -276,8 +277,9 @@ namespace Advent_Of_Code_2020.Days
 
                     foreach (var setCell in line.Select((c, i) => (c, i)).Where(item => item.c == '#').Select(item => index + item.i))
                     {
-                        setCells.Add(setCell);
+                        _ = setCells.Add(setCell);
                     }
+
                     index += size;
                 }
 
@@ -321,7 +323,10 @@ namespace Advent_Of_Code_2020.Days
                                     var combinedY = (tileSize - 2) * gridY + (tileY - 1);
 
                                     var combinedIndex = combinedY * (tileSize - 2) * gridSize + combinedX;
-                                    if (!combined.Add(combinedIndex)) throw new InvalidOperationException();
+                                    if (!combined.Add(combinedIndex))
+                                    {
+                                        throw new InvalidOperationException();
+                                    }
                                 }
                             }
                         }

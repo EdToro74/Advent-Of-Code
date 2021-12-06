@@ -3,15 +3,15 @@ using System.Text;
 
 namespace Advent_Of_Code_2019
 {
-    static class Day09
+    internal static class Day09
     {
         public static string Part1(IEnumerable<string> input)
         {
             var sb = new StringBuilder();
             foreach (var output in IntCodeProcessor.ProcessProgram(input, 1))
             {
-                sb.Append(output);
-                sb.AppendLine();
+                _ = sb.Append(output);
+                _ = sb.AppendLine();
             }
 
             return sb.ToString();
@@ -22,8 +22,8 @@ namespace Advent_Of_Code_2019
             var sb = new StringBuilder();
             foreach (var output in IntCodeProcessor.ProcessProgram(input, 2))
             {
-                sb.Append(output);
-                sb.AppendLine();
+                _ = sb.Append(output);
+                _ = sb.AppendLine();
             }
 
             return sb.ToString();

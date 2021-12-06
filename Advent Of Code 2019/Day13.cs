@@ -6,9 +6,9 @@ using System.Threading;
 
 namespace Advent_Of_Code_2019
 {
-    static class Day13
+    internal static class Day13
     {
-        enum TileType
+        private enum TileType
         {
             Empty = 0,
             Wall = 1,
@@ -17,7 +17,7 @@ namespace Advent_Of_Code_2019
             Ball = 4
         }
 
-        class GameObject
+        private class GameObject
         {
             public Point Position { get; }
             public TileType Type { get; }
@@ -58,8 +58,8 @@ namespace Advent_Of_Code_2019
             var program = IntCodeProcessor.ParseProgram(input);
             program.SetMemory(0, 2);
 
-            Point ballPosition = Point.Empty;
-            Point paddlePosition = Point.Empty;
+            var ballPosition = Point.Empty;
+            var paddlePosition = Point.Empty;
             var leftWallX = int.MaxValue;
             var rightWallX = int.MinValue;
             var started = false;
@@ -99,6 +99,7 @@ namespace Advent_Of_Code_2019
                 {
                     break;
                 }
+
                 if (x == -1 && y == 0)
                 {
                     score = game.Current;
@@ -123,6 +124,7 @@ namespace Advent_Of_Code_2019
                         rightWallX = Math.Max(x, rightWallX);
                     }
                 }
+
                 if (started)
                 {
                     Thread.Sleep(1);
@@ -132,18 +134,15 @@ namespace Advent_Of_Code_2019
             return score;
         }
 
-        private static char MapTile(TileType type, int x, int y)
+        private static char MapTile(TileType type, int x, int y) => type switch
         {
-            return type switch
-            {
-                TileType.Ball => 'o',
-                TileType.Block => '█',
-                TileType.Empty => ' ',
-                TileType.Paddle => '▄',
-                TileType.Wall => y == 0 ? '▄' : x == 0 ? '▌' : '▐',
-                _ => throw new Exception($"Unknown TileType: {type}"),
-            };
-        }
+            TileType.Ball => 'o',
+            TileType.Block => '█',
+            TileType.Empty => ' ',
+            TileType.Paddle => '▄',
+            TileType.Wall => y == 0 ? '▄' : x == 0 ? '▌' : '▐',
+            _ => throw new Exception($"Unknown TileType: {type}"),
+        };
 
         private static IEnumerable<GameObject> InitializeGame(IEnumerable<string> input)
         {
@@ -151,9 +150,9 @@ namespace Advent_Of_Code_2019
             bool more;
             do
             {
-                program.MoveNext();
+                _ = program.MoveNext();
                 var x = (int)program.Current;
-                program.MoveNext();
+                _ = program.MoveNext();
                 var y = (int)program.Current;
                 more = program.MoveNext();
                 var tile = (TileType)program.Current;

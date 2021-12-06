@@ -78,6 +78,7 @@ namespace Advent_Of_Code_2019
                 {
                     grids[min - 1] = new bool[height * width];
                 }
+
                 var max = grids.Keys.Max();
                 if (grids[max].Any(b => b))
                 {
@@ -169,10 +170,7 @@ namespace Advent_Of_Code_2019
             { 25, new[] {(0, 24), (-1, 18), (-1, 14), (0, 20)} }
         };
 
-        private static int GetLiveNeighbors(int index, int level, Dictionary<int, bool[]> grids)
-        {
-            return _neighbors[index + 1].Select(neighbor => GetGridValue(level + neighbor.levelModifier, neighbor.index - 1, grids)).Count(c => c);
-        }
+        private static int GetLiveNeighbors(int index, int level, Dictionary<int, bool[]> grids) => _neighbors[index + 1].Select(neighbor => GetGridValue(level + neighbor.levelModifier, neighbor.index - 1, grids)).Count(c => c);
 
         private static bool GetGridValue(int level, int index, Dictionary<int, bool[]> grids)
         {
@@ -197,6 +195,7 @@ namespace Advent_Of_Code_2019
                     {
                         value += 1 << shift;
                     }
+
                     shift++;
                 }
             }
@@ -215,6 +214,7 @@ namespace Advent_Of_Code_2019
                     live++;
                 }
             }
+
             if (y < grid.GetLength(0) - 1)
             {
                 if (grid[y + 1, x])
@@ -222,6 +222,7 @@ namespace Advent_Of_Code_2019
                     live++;
                 }
             }
+
             if (x > 0)
             {
                 if (grid[y, x - 1])
@@ -229,6 +230,7 @@ namespace Advent_Of_Code_2019
                     live++;
                 }
             }
+
             if (x < grid.GetLength(1) - 1)
             {
                 if (grid[y, x + 1])

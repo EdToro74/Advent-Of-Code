@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Advent_Of_Code_2019
 {
-    static class SpaceImageFormat
+    internal static class SpaceImageFormat
     {
         private const int TRANSPARENT = 2;
 
@@ -56,9 +56,6 @@ namespace Advent_Of_Code_2019
             return image;
         }
 
-        public static string DisplayImage(int[,] image)
-        {
-            return Utility.DisplayImage(image, v => v == 0 ? ' ' : '█');
-        }
+        public static string DisplayImage(int[,] image) => Utility.DisplayImage(image, v => v == 0 ? ' ' : '█');
     }
 }

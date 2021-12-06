@@ -139,7 +139,7 @@ namespace Advent_Of_Code_2020.Days
 
                 if (result.SubRule == null)
                 {
-                    stack.Pop();
+                    _ = stack.Pop();
                     lastResult = result;
                 }
                 else
@@ -175,10 +175,7 @@ namespace Advent_Of_Code_2020.Days
 
             public Rule() { }
 
-            public Rule(int id)
-            {
-                Id = id;
-            }
+            public Rule(int id) => Id = id;
 
             public abstract Rule Parse(int id, string input);
 
@@ -194,10 +191,7 @@ namespace Advent_Of_Code_2020.Days
 
             public CharacterRule() { }
 
-            private CharacterRule(int id, char character) : base(id)
-            {
-                _character = character;
-            }
+            private CharacterRule(int id, char character) : base(id) => _character = character;
 
             public override Rule Parse(int id, string input)
             {
@@ -219,10 +213,7 @@ namespace Advent_Of_Code_2020.Days
 
             public RuleRun() { }
 
-            private RuleRun(int id, IEnumerable<int> ruleIds) : base(id)
-            {
-                _ruleIds = ruleIds;
-            }
+            private RuleRun(int id, IEnumerable<int> ruleIds) : base(id) => _ruleIds = ruleIds;
 
             public override Rule Parse(int id, string input)
             {

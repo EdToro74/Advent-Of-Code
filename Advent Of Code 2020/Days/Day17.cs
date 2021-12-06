@@ -94,7 +94,10 @@ namespace Advent_Of_Code_2020.Days
 
             for (var z = minZ; z <= maxZ; z++)
             {
-                if (!cubes.Any(cell => cell.z == z)) continue;
+                if (!cubes.Any(cell => cell.z == z))
+                {
+                    continue;
+                }
 
                 Console.WriteLine($"z={z}");
                 for (var y = minY; y <= maxY; y++)
@@ -103,8 +106,10 @@ namespace Advent_Of_Code_2020.Days
                     {
                         Console.Write(cubes.Contains((x, y, z)) ? '#' : '.');
                     }
+
                     Console.WriteLine();
                 }
+
                 Console.WriteLine();
             }
         }
@@ -124,7 +129,10 @@ namespace Advent_Of_Code_2020.Days
             {
                 for (var z = minZ; z <= maxZ; z++)
                 {
-                    if (!hyperCubes.Any(cell => cell.z == z || cell.w == w)) continue;
+                    if (!hyperCubes.Any(cell => cell.z == z || cell.w == w))
+                    {
+                        continue;
+                    }
 
                     Console.WriteLine($"z={z}, w={w}");
                     for (var y = minY; y <= maxY; y++)
@@ -133,8 +141,10 @@ namespace Advent_Of_Code_2020.Days
                         {
                             Console.Write(hyperCubes.Contains((x, y, z, w)) ? '#' : '.');
                         }
+
                         Console.WriteLine();
                     }
+
                     Console.WriteLine();
                 }
             }

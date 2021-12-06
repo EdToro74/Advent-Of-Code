@@ -58,7 +58,7 @@ namespace Advent_Of_Code_2019
                 else if (command.StartsWith("deal with"))
                 {
                     var increment = int.Parse(command.Split(' ').Last());
-                    BigInteger z = ModInverse(increment, deckSize);
+                    var z = ModInverse(increment, deckSize);
 
                     return new LinearFunction(z % deckSize, 0);
                 }
@@ -83,12 +83,17 @@ namespace Advent_Of_Code_2019
                 d = v - t * x;
                 v = x;
             }
+
             v %= n;
-            if (v < 0) v = (v + n) % n;
+            if (v < 0)
+            {
+                v = (v + n) % n;
+            }
+
             return v;
         }
 
-        class LinearFunction
+        private class LinearFunction
         {
             public BigInteger K { get; }
             public BigInteger M { get; }

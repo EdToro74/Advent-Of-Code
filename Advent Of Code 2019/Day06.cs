@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Advent_Of_Code_2019
 {
-    static class Day06
+    internal static class Day06
     {
         public static int Part1(IEnumerable<string> input)
         {
@@ -60,8 +60,10 @@ namespace Advent_Of_Code_2019
 
                 if (!nodes.TryGetValue(name, out var node))
                 {
-                    node = new OrbitTreeNode(name);
-                    node.Parent = parentNode;
+                    node = new OrbitTreeNode(name)
+                    {
+                        Parent = parentNode
+                    };
                     nodes[name] = node;
                 }
                 else
@@ -101,10 +103,7 @@ namespace Advent_Of_Code_2019
             public List<OrbitTreeNode> Children { get; } = new List<OrbitTreeNode>();
             public OrbitTreeNode Parent { get; set; }
 
-            public OrbitTreeNode(string name)
-            {
-                Name = name;
-            }
+            public OrbitTreeNode(string name) => Name = name;
 
             public int Orbits
             {
@@ -123,13 +122,7 @@ namespace Advent_Of_Code_2019
                 }
             }
 
-            public int TotalOrbits
-            {
-                get
-                {
-                    return Orbits + Children.Sum(c => c.TotalOrbits);
-                }
-            }
+            public int TotalOrbits => Orbits + Children.Sum(c => c.TotalOrbits);
 
             public (bool hasDescendant, int orbitsAway) HasDescendant(string descendantName)
             {
@@ -141,7 +134,7 @@ namespace Advent_Of_Code_2019
 
                 foreach (var child in Children)
                 {
-                    (var hasDescendant, int orbitsAway) = child.HasDescendant(descendantName);
+                    (var hasDescendant, var orbitsAway) = child.HasDescendant(descendantName);
                     if (hasDescendant)
                     {
                         return (true, orbitsAway + 1);

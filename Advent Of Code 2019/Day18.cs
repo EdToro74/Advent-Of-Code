@@ -117,8 +117,10 @@ namespace Advent_Of_Code_2019
                             destinations = new Dictionary<char, (int steps, KeyMask keysNeeded, KeyMask keysCollected, bool isTeleport)>();
                             keyPaths[keyA] = destinations;
                         }
+
                         keyPaths[keyA][keyB] = (steps, new KeyMask(keysNeeded), new KeyMask(keysCollected), false);
                     }
+
                     if (!keysNeeded.Contains(char.ToUpper(keyA)))
                     {
                         if (!keyPaths.TryGetValue(keyB, out var destinations))
@@ -126,6 +128,7 @@ namespace Advent_Of_Code_2019
                             destinations = new Dictionary<char, (int steps, KeyMask keysNeeded, KeyMask keysCollected, bool isTeleport)>();
                             keyPaths[keyB] = destinations;
                         }
+
                         keyPaths[keyB][keyA] = (steps, new KeyMask(keysNeeded), new KeyMask(keysCollected), false);
                     }
                 }
@@ -148,6 +151,7 @@ namespace Advent_Of_Code_2019
                 {
                     Console.WriteLine($"{new string(' ', _indent * 2)}Cached No  Complete Paths from: {start} Keys Collected: {keysCollected}");
                 }
+
                 return (cachedResult.success, cachedResult.steps, cachedResult.path);
             }
 
@@ -166,6 +170,7 @@ namespace Advent_Of_Code_2019
             {
                 potentialDestinations = potentialDestinations.Concat(keyPaths['_']);
             }
+
             var destinations = potentialDestinations.ToArray();
 
             foreach (var destination in destinations)
@@ -188,7 +193,8 @@ namespace Advent_Of_Code_2019
                     {
                         childKeyPaths[kvp.Key] = new Dictionary<char, (int steps, KeyMask keysNeeded, KeyMask keysCollected, bool isTeleport)>(kvp.Value);
                     }
-                    childKeyPaths['_'].Remove(destination.Key);
+
+                    _ = childKeyPaths['_'].Remove(destination.Key);
                     if (start != '_')
                     {
                         var entrance = keyPaths.Where(kvp => !char.IsLetter(kvp.Key) && kvp.Key != '_' && kvp.Value.Any(kvp2 => kvp2.Value.keysCollected.HasKey(start))).SingleOrDefault();
@@ -199,6 +205,7 @@ namespace Advent_Of_Code_2019
                         }
                     }
                 }
+
                 var (success, steps, pathTaken) = GatherAllKeys(destination.Key, keys, childKeyPaths, destinationKeysCollected, destination.Value.isTeleport);
                 if (success)
                 {
@@ -209,6 +216,7 @@ namespace Advent_Of_Code_2019
                     }
                 }
             }
+
             _indent--;
 
             if (minSteps == int.MaxValue)
@@ -225,16 +233,13 @@ namespace Advent_Of_Code_2019
             }
         }
 
-        struct KeyMask : IEquatable<KeyMask>
+        private struct KeyMask : IEquatable<KeyMask>
         {
             private readonly int _mask;
 
             public static KeyMask Empty { get; } = new KeyMask(0);
 
-            public KeyMask(char key)
-            {
-                _mask = 1 << GetShift(key);
-            }
+            public KeyMask(char key) => _mask = 1 << GetShift(key);
 
             public KeyMask(IEnumerable<char> keys) : this(0, keys)
             {
@@ -249,15 +254,9 @@ namespace Advent_Of_Code_2019
                 }
             }
 
-            private KeyMask(int mask)
-            {
-                _mask = mask;
-            }
+            private KeyMask(int mask) => _mask = mask;
 
-            public KeyMask AddKeys(KeyMask keyMask)
-            {
-                return new KeyMask(_mask | keyMask._mask);
-            }
+            public KeyMask AddKeys(KeyMask keyMask) => new KeyMask(_mask | keyMask._mask);
 
             public bool HasKey(char key)
             {
@@ -265,10 +264,7 @@ namespace Advent_Of_Code_2019
                 return (_mask & value) == value;
             }
 
-            public bool HasKeys(KeyMask keyMask)
-            {
-                return (_mask & keyMask._mask) == keyMask._mask;
-            }
+            public bool HasKeys(KeyMask keyMask) => (_mask & keyMask._mask) == keyMask._mask;
 
             public bool HasKeys(IEnumerable<char> keys)
             {
@@ -277,6 +273,7 @@ namespace Advent_Of_Code_2019
                 {
                     value |= 1 << GetShift(key);
                 }
+
                 return (_mask & value) == value;
             }
 
@@ -299,10 +296,7 @@ namespace Advent_Of_Code_2019
                 return keys;
             }
 
-            public bool Equals([AllowNull] KeyMask other)
-            {
-                return _mask == other._mask;
-            }
+            public bool Equals([AllowNull] KeyMask other) => _mask == other._mask;
 
             private static int GetShift(char key)
             {
@@ -311,18 +305,13 @@ namespace Advent_Of_Code_2019
                 {
                     shift = 31;
                 }
+
                 return shift;
             }
 
-            public override bool Equals(object obj)
-            {
-                return obj is KeyMask mask && Equals(mask);
-            }
+            public override bool Equals(object obj) => obj is KeyMask mask && Equals(mask);
 
-            public override int GetHashCode()
-            {
-                return _mask.GetHashCode();
-            }
+            public override int GetHashCode() => _mask.GetHashCode();
         }
 
         private static IEnumerable<(int x, int y)> GetAccessibleNeighbors((int x, int y) current, List<string> map, string opened)
@@ -359,10 +348,7 @@ namespace Advent_Of_Code_2019
             return accessible;
         }
 
-        private static int GetCost((int x, int y) a, (int x, int y) b)
-        {
-            return Math.Abs(a.x - b.x) + Math.Abs(a.y - b.y);
-        }
+        private static int GetCost((int x, int y) a, (int x, int y) b) => Math.Abs(a.x - b.x) + Math.Abs(a.y - b.y);
 
         private static (int x, int y) FindLocation(List<string> map, char item)
         {

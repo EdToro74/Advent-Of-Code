@@ -2,7 +2,7 @@
 
 namespace Advent_Of_Code_2019
 {
-    static class Day02
+    internal static class Day02
     {
         public static long Part1(IEnumerable<string> input)
         {
@@ -11,7 +11,7 @@ namespace Advent_Of_Code_2019
             programState.SetMemory(1, 12);
             programState.SetMemory(2, 2);
 
-            IntCodeProcessor.ProcessProgram(programState);
+            _ = IntCodeProcessor.ProcessProgram(programState);
 
             return programState.GetMemory(0);
         }
@@ -20,16 +20,16 @@ namespace Advent_Of_Code_2019
         {
             var program = IntCodeProcessor.ParseProgram(input);
 
-            for (int noun = 0; noun < 100; noun++)
+            for (var noun = 0; noun < 100; noun++)
             {
-                for (int verb = 0; verb < 100; verb++)
+                for (var verb = 0; verb < 100; verb++)
                 {
                     var copy = IntCodeProcessor.CopyProgram(program);
 
                     copy.SetMemory(1, noun);
                     copy.SetMemory(2, verb);
 
-                    IntCodeProcessor.ProcessProgram(copy);
+                    _ = IntCodeProcessor.ProcessProgram(copy);
                     if (copy.GetMemory(0) == 19690720)
                     {
                         return 100 * noun + verb;

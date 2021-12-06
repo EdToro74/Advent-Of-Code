@@ -126,7 +126,7 @@ namespace Advent_Of_Code_2020.Days
             }
         }
 
-        class SeatAutomata
+        private class SeatAutomata
         {
             public int _width;
             public int _height;
@@ -157,22 +157,24 @@ namespace Advent_Of_Code_2020.Days
                     var columnIndex = 0;
                     foreach (var cell in row)
                     {
-                        int cellIndex = columnIndex + (width * rowIndex);
+                        var cellIndex = columnIndex + (width * rowIndex);
                         switch (cell)
                         {
                             case 'L':
-                                emptySeatIndices.Add(cellIndex);
+                                _ = emptySeatIndices.Add(cellIndex);
                                 break;
                             case '#':
-                                takenIndices.Add(cellIndex);
+                                _ = takenIndices.Add(cellIndex);
                                 break;
                             case '.':
                                 break;
                             default:
                                 throw new InvalidOperationException($"Unknown cell type: {cell}");
                         }
+
                         columnIndex++;
                     }
+
                     rowIndex++;
                 }
 
@@ -188,22 +190,23 @@ namespace Advent_Of_Code_2020.Days
                 {
                     if (stepFunction(seatIndex, _width, _height, _takenIndices, _emptySeatIndices))
                     {
-                        nextTakenIndices.Add(seatIndex);
+                        _ = nextTakenIndices.Add(seatIndex);
                     }
                     else
                     {
-                        nextEmptySeatIndices.Add(seatIndex);
+                        _ = nextEmptySeatIndices.Add(seatIndex);
                     }
                 }
+
                 foreach (var seatIndex in _emptySeatIndices)
                 {
                     if (stepFunction(seatIndex, _width, _height, _takenIndices, _emptySeatIndices))
                     {
-                        nextTakenIndices.Add(seatIndex);
+                        _ = nextTakenIndices.Add(seatIndex);
                     }
                     else
                     {
-                        nextEmptySeatIndices.Add(seatIndex);
+                        _ = nextEmptySeatIndices.Add(seatIndex);
                     }
                 }
 
@@ -221,18 +224,19 @@ namespace Advent_Of_Code_2020.Days
                         var seatIndex = (row * _width) + column;
                         if (_emptySeatIndices.Contains(seatIndex))
                         {
-                            sb.Append('L');
+                            _ = sb.Append('L');
                         }
                         else if (_takenIndices.Contains(seatIndex))
                         {
-                            sb.Append('#');
+                            _ = sb.Append('#');
                         }
                         else
                         {
-                            sb.Append('.');
+                            _ = sb.Append('.');
                         }
                     }
-                    sb.AppendLine();
+
+                    _ = sb.AppendLine();
                 }
 
                 return sb.ToString();

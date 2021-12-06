@@ -24,7 +24,7 @@
 
         public static T SingleOrFallback<T>(this IEnumerable<T> source, T fallback)
         {
-            T value = fallback;
+            var value = fallback;
 
             var enumerator = source.GetEnumerator();
 
@@ -49,8 +49,9 @@
                 if (buffer.Count == windowSize)
                 {
                     yield return buffer;
-                    buffer.Dequeue();
+                    _ = buffer.Dequeue();
                 }
+
                 buffer.Enqueue(item);
             }
 

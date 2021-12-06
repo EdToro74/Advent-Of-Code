@@ -4,12 +4,9 @@ using System.Linq;
 
 namespace Advent_Of_Code_2019
 {
-    static class Day11
+    internal static class Day11
     {
-        public static int Part1(IEnumerable<string> input)
-        {
-            return RunPaintingRobot(input, Color.Black).Count;
-        }
+        public static int Part1(IEnumerable<string> input) => RunPaintingRobot(input, Color.Black).Count;
 
         public static string Part2(IEnumerable<string> input)
         {
@@ -41,12 +38,14 @@ namespace Advent_Of_Code_2019
                 OutputState: OutputState.Color
             );
 
-            var colors = new Dictionary<(int x, int y), Color>();
-            colors[(0, 0)] = initialColor;
+            var colors = new Dictionary<(int x, int y), Color>
+            {
+                [(0, 0)] = initialColor
+            };
 
             Func<long> inputHandler = () =>
             {
-                colors.TryGetValue(state.Position, out var color);
+                _ = colors.TryGetValue(state.Position, out var color);
 
                 return (long)color;
             };
@@ -91,6 +90,7 @@ namespace Advent_Of_Code_2019
                                 state.Position.x++;
                                 break;
                         }
+
                         state.OutputState = OutputState.Color;
                         break;
                     default:
@@ -101,7 +101,7 @@ namespace Advent_Of_Code_2019
             return colors;
         }
 
-        enum Direction
+        private enum Direction
         {
             Up,
             Right,
@@ -109,13 +109,13 @@ namespace Advent_Of_Code_2019
             Left
         }
 
-        enum OutputState
+        private enum OutputState
         {
             Color,
             Direction
         }
 
-        enum Color
+        private enum Color
         {
             Black = 0,
             White = 1

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Advent_Of_Code_2019
 {
-    static class Day17
+    internal static class Day17
     {
         public static int Part1(IEnumerable<string> input)
         {
@@ -89,6 +89,7 @@ namespace Advent_Of_Code_2019
                             mode++;
                             ProcessOutputToken(outputToken);
                         }
+
                         break;
                     // Main routine query
                     case 1:
@@ -101,6 +102,7 @@ namespace Advent_Of_Code_2019
                         {
                             mode++;
                         }
+
                         break;
                     case 6:
                         if (outputToken >= char.MinValue && outputToken <= char.MaxValue && mapTiles.Contains((char)outputToken) && (lastOutput != 10 || outputToken != 10))
@@ -113,10 +115,13 @@ namespace Advent_Of_Code_2019
                             {
                                 DisplayMap(GetMap(output.ToArray()));
                             }
+
                             output = new List<long>();
                         }
+
                         break;
                 }
+
                 lastOutput = outputToken;
             }
 
@@ -144,14 +149,17 @@ namespace Advent_Of_Code_2019
             {
                 yield return (x, y + 1);
             }
+
             if (y > 0)
             {
                 yield return (x, y - 1);
             }
+
             if (x > 0)
             {
                 yield return (x - 1, y);
             }
+
             if (x < maxX - 1)
             {
                 yield return (x + 1, y);

@@ -5,9 +5,11 @@ VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Advent Of Code 2019", "Advent Of Code 2019\Advent Of Code 2019.csproj", "{F933FED6-78DB-4E24-9791-21EDF650D23A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Advent Of Code 2020", "Advent Of Code 2020\Advent Of Code 2020.csproj", "{55862764-0D0F-4C07-BD76-9B3252948DF8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Advent Of Code 2020", "Advent Of Code 2020\Advent Of Code 2020.csproj", "{55862764-0D0F-4C07-BD76-9B3252948DF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.csproj", "{972155A1-834C-4FCD-8FB4-C5AC714BCEA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utility", "Utility\Utility.csproj", "{972155A1-834C-4FCD-8FB4-C5AC714BCEA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Advent Of Code 2021", "Advent Of Code 2021\Advent Of Code 2021.csproj", "{19393FFB-3778-482D-8170-A95D5A9B3AE1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{972155A1-834C-4FCD-8FB4-C5AC714BCEA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{972155A1-834C-4FCD-8FB4-C5AC714BCEA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{972155A1-834C-4FCD-8FB4-C5AC714BCEA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19393FFB-3778-482D-8170-A95D5A9B3AE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19393FFB-3778-482D-8170-A95D5A9B3AE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19393FFB-3778-482D-8170-A95D5A9B3AE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19393FFB-3778-482D-8170-A95D5A9B3AE1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

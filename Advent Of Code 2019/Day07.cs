@@ -5,17 +5,11 @@ using Utility;
 
 namespace Advent_Of_Code_2019
 {
-    static class Day07
+    internal static class Day07
     {
-        public static long Part1(IEnumerable<string> input)
-        {
-            return RunAmps(input, new[] { 0, 1, 2, 3, 4 });
-        }
+        public static long Part1(IEnumerable<string> input) => RunAmps(input, new[] { 0, 1, 2, 3, 4 });
 
-        public static long Part2(IEnumerable<string> input)
-        {
-            return RunAmps(input, new[] { 5, 6, 7, 8, 9 });
-        }
+        public static long Part2(IEnumerable<string> input) => RunAmps(input, new[] { 5, 6, 7, 8, 9 });
 
         public static long RunAmps(IEnumerable<string> input, int[] phases)
         {

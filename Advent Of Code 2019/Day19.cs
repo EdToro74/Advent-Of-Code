@@ -70,6 +70,7 @@ namespace Advent_Of_Code_2019
                 {
                     lowestLow = Math.Min(lowestLow, y);
                 }
+
                 return result;
             }
 
@@ -86,6 +87,7 @@ namespace Advent_Of_Code_2019
 
                     return 1;
                 }
+
                 return result;
             });
 

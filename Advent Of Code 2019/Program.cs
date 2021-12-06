@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Advent_Of_Code_2019
 {
-    class Program
+    internal class Program
     {
         private static void Main()
         {
@@ -59,14 +59,8 @@ namespace Advent_Of_Code_2019
             Console.WriteLine(Day25.Part1(GetDayFile(25)));
         }
 
-        static IEnumerable<string> GetDayFile(int day)
-        {
-            return GetFile(Path.Combine(Directory.GetCurrentDirectory(), $@"..\..\..\Input\Day {day}.txt"));
-        }
+        private static IEnumerable<string> GetDayFile(int day) => GetFile(Path.Combine(Directory.GetCurrentDirectory(), $@"..\..\..\Input\Day {day}.txt"));
 
-        static IEnumerable<string> GetFile(string path)
-        {
-            return File.ReadLines(path);
-        }
+        private static IEnumerable<string> GetFile(string path) => File.ReadLines(path);
     }
 }

@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Advent_Of_Code_2019
 {
-    static class Day05
+    internal static class Day05
     {
         public static string Part1(IEnumerable<string> input)
         {
@@ -12,7 +12,7 @@ namespace Advent_Of_Code_2019
             var sb = new StringBuilder();
             foreach (var output in IntCodeProcessor.ProcessProgram(input, inputs))
             {
-                sb.Append(output);
+                _ = sb.Append(output);
             }
 
             return sb.ToString();
@@ -25,7 +25,7 @@ namespace Advent_Of_Code_2019
             var sb = new StringBuilder();
             foreach (var output in IntCodeProcessor.ProcessProgram(input, inputs))
             {
-                sb.Append(output);
+                _ = sb.Append(output);
             }
 
             return sb.ToString();

@@ -7,7 +7,7 @@ namespace Advent_Of_Code_2019
 {
     public static class Day25
     {
-        enum Mode
+        private enum Mode
         {
             Exploring,
             TestingWeights
@@ -126,6 +126,7 @@ namespace Advent_Of_Code_2019
                             {
                                 throw new Exception("Tried all inventory combinations");
                             }
+
                             currentInventoryAttempt = inventoryAttempts.Dequeue();
                         }
 
@@ -198,10 +199,13 @@ namespace Advent_Of_Code_2019
                             node.AddNeighbor(OppositeDirection(lastDirection), currentNode);
                             node.AddExplored(OppositeDirection(lastDirection));
                         }
+
                         currentNode = node;
                     }
+
                     room = string.Empty;
                 }
+
                 Console.Write((char)c);
                 if (room.EndsWith(" on the keypad at the main airlock.\"\n"))
                 {
@@ -239,8 +243,10 @@ namespace Advent_Of_Code_2019
                     {
                         throw new Exception($"Already had the {item} in inventory!");
                     }
+
                     currentNode.ItemTaken(item);
                 }
+
                 if (line.StartsWith("You drop the "))
                 {
                     var item = line.Replace("You drop the ", "").TrimEnd('.');
@@ -248,8 +254,10 @@ namespace Advent_Of_Code_2019
                     {
                         throw new Exception($"Didn't have the {item} in inventory but dropped it!");
                     }
+
                     currentNode.ItemDropped(item);
                 }
+
                 if (line.StartsWith("== ") && line.EndsWith(" =="))
                 {
                     if (name != null)
@@ -259,6 +267,7 @@ namespace Advent_Of_Code_2019
                         items = new List<string>();
                         exits = new List<string>();
                     }
+
                     name = line[3..^3];
                 }
 
@@ -291,6 +300,7 @@ namespace Advent_Of_Code_2019
                 {
                     node = new Node(name, exits, items);
                 }
+
                 return node;
             }
 
@@ -322,25 +332,16 @@ namespace Advent_Of_Code_2019
                     throw new Exception("That direction is not a valid exit!");
                 }
 
-                _exitsTaken.Add(direction);
+                _ = _exitsTaken.Add(direction);
             }
 
             public IEnumerable<string> UnexploredExits => Exits.Except(_exitsTaken);
 
-            public void ItemTaken(string item)
-            {
-                ((HashSet<string>)Items).Remove(item);
-            }
+            public void ItemTaken(string item) => _ = ((HashSet<string>)Items).Remove(item);
 
-            public void ItemDropped(string item)
-            {
-                ((HashSet<string>)Items).Add(item);
-            }
+            public void ItemDropped(string item) => _ = ((HashSet<string>)Items).Add(item);
 
-            public void AddNeighbor(string lastDirection, Node node)
-            {
-                _neighbors[lastDirection] = node;
-            }
+            public void AddNeighbor(string lastDirection, Node node) => _neighbors[lastDirection] = node;
         }
     }
 }

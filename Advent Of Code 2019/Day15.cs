@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Advent_Of_Code_2019
 {
-    static class Day15
+    internal static class Day15
     {
         public static int Part1(IEnumerable<string> input)
         {
@@ -14,6 +14,7 @@ namespace Advent_Of_Code_2019
                 Console.WindowHeight = Console.LargestWindowHeight - 3;
                 Console.SetWindowPosition(0, 0);
             }
+
             var (map, deadEnds) = TraverseMap(input);
 
             var stepCount = 0;
@@ -63,8 +64,8 @@ namespace Advent_Of_Code_2019
 
                 foreach (var neighbor in producers.SelectMany(source => GetNeighbors(source).Select(neighbor => neighbor.coords)).Distinct().Where(neighbor => map[neighbor] == '.' && !oxygenated.Contains(neighbor)))
                 {
-                    oxygenated.Add(neighbor);
-                    newProducers.Add(neighbor);
+                    _ = oxygenated.Add(neighbor);
+                    _ = newProducers.Add(neighbor);
                     map[neighbor] = 'O';
                 }
 
@@ -180,7 +181,7 @@ namespace Advent_Of_Code_2019
 
                     if (!map.ContainsKey(coords))
                     {
-                        missing.Add(coords);
+                        _ = missing.Add(coords);
                     }
 
                     // Prefer an unknown direction
@@ -239,7 +240,7 @@ namespace Advent_Of_Code_2019
                         throw new Exception($"Unknown lastInput {lastInput}");
                 }
 
-                missing.Remove(nextCoords);
+                _ = missing.Remove(nextCoords);
 
                 if (output == 0)
                 {
@@ -265,7 +266,7 @@ namespace Advent_Of_Code_2019
                     map[currentCoords] = '.';
                     foreach (var neighbor in GetNeighbors(currentCoords).Where(neighbor => !map.ContainsKey(neighbor.coords)))
                     {
-                        missing.Add(neighbor.coords);
+                        _ = missing.Add(neighbor.coords);
                     }
                 }
 

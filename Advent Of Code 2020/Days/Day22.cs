@@ -79,7 +79,7 @@ namespace Advent_Of_Code_2020.Days
 
             if (winnerId != 0)
             {
-                _gameHistory.Remove(gameId);
+                _ = _gameHistory.Remove(gameId);
             }
             else
             {
@@ -90,6 +90,7 @@ namespace Advent_Of_Code_2020.Days
                     {
                         history.Add(currentPlayer.Key, new List<Queue<int>>());
                     }
+
                     _gameHistory[gameId] = history;
                 }
 
@@ -155,6 +156,7 @@ namespace Advent_Of_Code_2020.Days
                 {
                     //Console.WriteLine($"Player {player.Key}'s deck: {string.Join(", ", player.Value)}");
                 }
+
                 var plays = players.Select(kvp => (player: kvp.Key, card: kvp.Value.Dequeue())).ToList(); ;
 
                 foreach (var play in plays.OrderBy(play => play.player))
@@ -181,11 +183,8 @@ namespace Advent_Of_Code_2020.Days
             return gameWinnerId;
         }
 
-        private static Dictionary<int, Queue<int>> CloneHands(Dictionary<int, Queue<int>> players, Func<int, Queue<int>, Queue<int>> modifier = null)
-        {
-            return new Dictionary<int, Queue<int>>(
+        private static Dictionary<int, Queue<int>> CloneHands(Dictionary<int, Queue<int>> players, Func<int, Queue<int>, Queue<int>> modifier = null) => new Dictionary<int, Queue<int>>(
                 players.Select(player => new KeyValuePair<int, Queue<int>>(player.Key, new Queue<int>(modifier != null ? modifier(player.Key, player.Value) : player.Value)))
             );
-        }
     }
 }

@@ -39,7 +39,7 @@ namespace Advent_Of_Code_2020.Days
                             validPassports++;
                         }
                     }
-                    
+
                     passport.Clear();
                     continue;
                 }
@@ -68,12 +68,12 @@ namespace Advent_Of_Code_2020.Days
                 var height = d["hgt"];
                 if (height.EndsWith("cm"))
                 {
-                    int.TryParse(height[0..^2], out var cm);
+                    _ = int.TryParse(height[0..^2], out var cm);
                     return cm >= 150 && cm <= 193;
                 }
                 else if (height.EndsWith("in"))
                 {
-                    int.TryParse(height[0..^2], out var inches);
+                    _ = int.TryParse(height[0..^2], out var inches);
                     return inches >= 59 && inches <= 76;
                 }
 

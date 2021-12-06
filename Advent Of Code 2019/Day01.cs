@@ -3,22 +3,13 @@ using System.Linq;
 
 namespace Advent_Of_Code_2019
 {
-    static class Day01
+    internal static class Day01
     {
-        public static int Part1(IEnumerable<string> input)
-        {
-            return input.Select(s => int.Parse(s)).Select(CalculateFuel).Sum();
-        }
+        public static int Part1(IEnumerable<string> input) => input.Select(s => int.Parse(s)).Select(CalculateFuel).Sum();
 
-        public static int Part2(IEnumerable<string> input)
-        {
-            return input.Select(s => int.Parse(s)).Select(CalculateFuelRecursively).Sum();
-        }
+        public static int Part2(IEnumerable<string> input) => input.Select(s => int.Parse(s)).Select(CalculateFuelRecursively).Sum();
 
-        public static int CalculateFuel(int mass)
-        {
-            return mass / 3 - 2;
-        }
+        public static int CalculateFuel(int mass) => mass / 3 - 2;
 
         public static int CalculateFuelRecursively(int mass)
         {

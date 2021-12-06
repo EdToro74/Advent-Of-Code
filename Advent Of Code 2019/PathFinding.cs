@@ -16,7 +16,7 @@ namespace Advent_Of_Code_2019
 
             costSoFar[start] = 0;
 
-            T current = start;
+            var current = start;
 
             while (frontier.Count() > 0)
             {

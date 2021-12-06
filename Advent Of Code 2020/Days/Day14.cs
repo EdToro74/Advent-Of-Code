@@ -18,7 +18,10 @@ namespace Advent_Of_Code_2020.Days
             foreach (var line in input)
             {
                 var parts = line.Split(" = ");
-                if (parts.Length != 2) throw new InvalidOperationException("Unknown command");
+                if (parts.Length != 2)
+                {
+                    throw new InvalidOperationException("Unknown command");
+                }
 
                 if (parts[0] == "mask")
                 {
@@ -41,7 +44,10 @@ namespace Advent_Of_Code_2020.Days
             foreach (var line in input)
             {
                 var parts = line.Split(" = ");
-                if (parts.Length != 2) throw new InvalidOperationException("Unknown command");
+                if (parts.Length != 2)
+                {
+                    throw new InvalidOperationException("Unknown command");
+                }
 
                 if (parts[0] == "mask")
                 {
@@ -117,7 +123,10 @@ namespace Advent_Of_Code_2020.Days
 
         private static bool?[] GetMask(string input)
         {
-            if (input.Length != 36) throw new InvalidOperationException("Invalid input length");
+            if (input.Length != 36)
+            {
+                throw new InvalidOperationException("Invalid input length");
+            }
 
             return input.Reverse().Select<char, bool?>(c => c switch { 'X' => null, '1' => true, '0' => false, _ => throw new InvalidOperationException($"Uknown mask character: {c}") }).ToArray();
         }

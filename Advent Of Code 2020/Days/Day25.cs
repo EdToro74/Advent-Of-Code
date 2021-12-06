@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace Advent_Of_Code_2020.Days
 {
@@ -18,7 +16,6 @@ namespace Advent_Of_Code_2020.Days
             var doorPublicKey = int.Parse(input.Skip(1).First());
 
             var cardLoopSize = FindLoopSize(subjectNumber, mod, cardPublicKey);
-            var doorLoopSize = FindLoopSize(subjectNumber, mod, doorPublicKey);
 
             var encryptionKey = Encrypt(doorPublicKey, mod, cardLoopSize);
             Console.WriteLine($"Part 1: {encryptionKey}");

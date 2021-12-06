@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Advent_Of_Code_2019
 {
-    static class Day14
+    internal static class Day14
     {
         public static long Part1(IEnumerable<string> input)
         {
@@ -34,7 +34,7 @@ namespace Advent_Of_Code_2019
 
             void DepthFirstTraverse(Reaction reaction)
             {
-                marked.Add(reaction);
+                _ = marked.Add(reaction);
 
                 foreach (var childReaction in reactions.Where(r => r.Inputs.Any(i => i.Chemical == reaction.Output.Chemical)))
                 {
@@ -66,7 +66,7 @@ namespace Advent_Of_Code_2019
 
                 foreach (var input in reaction.Inputs)
                 {
-                    chemicalsNeeded.TryGetValue(input.Chemical, out var existingAmount);
+                    _ = chemicalsNeeded.TryGetValue(input.Chemical, out var existingAmount);
                     chemicalsNeeded[input.Chemical] = existingAmount + input.Amount * toMake;
                 }
             }
@@ -100,10 +100,7 @@ namespace Advent_Of_Code_2019
                     return new ReactionComponent(chemical, amount);
                 }
 
-                public override string ToString()
-                {
-                    return $"{Amount} {Chemical}";
-                }
+                public override string ToString() => $"{Amount} {Chemical}";
             }
 
             private Reaction(ReactionComponent output, IEnumerable<ReactionComponent> inputs)
@@ -123,10 +120,7 @@ namespace Advent_Of_Code_2019
                 return new Reaction(output, inputs);
             }
 
-            public override string ToString()
-            {
-                return $"{string.Join(", ", Inputs)} => {Output}";
-            }
+            public override string ToString() => $"{string.Join(", ", Inputs)} => {Output}";
         }
     }
 }

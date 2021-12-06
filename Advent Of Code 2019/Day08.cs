@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Advent_Of_Code_2019
 {
-    static class Day08
+    internal static class Day08
     {
         public static int Part1(IEnumerable<string> input, int width, int height)
         {

@@ -19,22 +19,27 @@ namespace Advent_Of_Code_2019
                       {
                           candidates.Add((current.x - 1, current.y));
                       }
+
                       if (current.x < map[0].Length - 2)
                       {
                           candidates.Add((current.x + 1, current.y));
                       }
+
                       if (current.y > 0)
                       {
                           candidates.Add((current.x, current.y - 1));
                       }
+
                       if (current.y < map.Length - 2)
                       {
                           candidates.Add((current.x, current.y + 1));
                       }
+
                       foreach (var teleporter in locations.teleporters.Where(t => t.source.coordinates == current))
                       {
                           candidates.Add(teleporter.destination.coordinates);
                       }
+
                       foreach (var teleporter in locations.teleporters.Where(t => t.destination.coordinates == current))
                       {
                           candidates.Add(teleporter.source.coordinates);
@@ -65,22 +70,27 @@ namespace Advent_Of_Code_2019
                 {
                     candidates.Add(((current.coords.x - 1, current.coords.y), current.level));
                 }
+
                 if (current.coords.x < map[0].Length - 2)
                 {
                     candidates.Add(((current.coords.x + 1, current.coords.y), current.level));
                 }
+
                 if (current.coords.y > 0)
                 {
                     candidates.Add(((current.coords.x, current.coords.y - 1), current.level));
                 }
+
                 if (current.coords.y < map.Length - 2)
                 {
                     candidates.Add(((current.coords.x, current.coords.y + 1), current.level));
                 }
+
                 foreach (var teleporter in locations.teleporters.Where(t => t.source.coordinates == current.coords))
                 {
                     candidates.Add((teleporter.destination.coordinates, teleporter.source.isInner ? current.level + 1 : current.level - 1));
                 }
+
                 foreach (var teleporter in locations.teleporters.Where(t => t.destination.coordinates == current.coords))
                 {
                     candidates.Add((teleporter.source.coordinates, teleporter.destination.isInner ? current.level + 1 : current.level - 1));
@@ -108,6 +118,7 @@ namespace Advent_Of_Code_2019
                     nameLocations = new List<((int x, int y) coordinates, bool isInner)>();
                     locations[name] = nameLocations;
                 }
+
                 nameLocations.Add((coordinates, isInner));
             }
 
@@ -133,6 +144,7 @@ namespace Advent_Of_Code_2019
                         {
                             coordinates.x = index + 2;
                         }
+
                         isInner = !(index == 0 || index == row.Length - 2);
                     }
                     else if (y < input.Length - 1 && char.IsLetter(input[y + 1][index]))
@@ -148,6 +160,7 @@ namespace Advent_Of_Code_2019
                         {
                             coordinates.y = y + 2;
                         }
+
                         isInner = !(y == 0 || y == input.Length - 2);
                     }
 

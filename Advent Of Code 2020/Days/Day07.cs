@@ -39,6 +39,7 @@ namespace Advent_Of_Code_2020.Days
                         {
                             childToParent.Add(childBag, new List<string>());
                         }
+
                         childToParent[childBag].Add(parentBag);
                     }
                 }
@@ -79,7 +80,7 @@ namespace Advent_Of_Code_2020.Days
 
                 if (parentToChildren.TryGetValue(current.bag, out var children))
                 {
-                    foreach(var child in children)
+                    foreach (var child in children)
                     {
                         childrenStack.Push((current.count * child.count, child.bag));
                     }

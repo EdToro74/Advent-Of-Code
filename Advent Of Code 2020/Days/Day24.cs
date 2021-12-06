@@ -18,11 +18,11 @@ namespace Advent_Of_Code_2020.Days
                 var coords = Traverse(line);
                 if (blackTiles.Contains(coords))
                 {
-                    blackTiles.Remove(coords);
+                    _ = blackTiles.Remove(coords);
                 }
                 else
                 {
-                    blackTiles.Add(coords);
+                    _ = blackTiles.Add(coords);
                 }
             }
 
@@ -42,11 +42,11 @@ namespace Advent_Of_Code_2020.Days
                     var blackNeighbors = GetNeighbors((x, y)).Count(coord => blackTiles.Contains(coord));
                     if (blackTiles.Contains((x, y)) && blackNeighbors > 0 && blackNeighbors < 3)
                     {
-                        nextBlackTiles.Add((x, y));
+                        _ = nextBlackTiles.Add((x, y));
                     }
                     else if (!blackTiles.Contains((x, y)) && blackNeighbors == 2)
                     {
-                        nextBlackTiles.Add((x, y));
+                        _ = nextBlackTiles.Add((x, y));
                     }
                 }
 

@@ -59,7 +59,7 @@ namespace Advent_Of_Code_2020.Days
 
             foreach (var safeIngredient in safeIngredients)
             {
-                ingredients.Remove(safeIngredient);
+                _ = ingredients.Remove(safeIngredient);
             }
 
             foreach (var allergen in allergens)
@@ -79,17 +79,17 @@ namespace Advent_Of_Code_2020.Days
                     var foundAllergenIngredient = foundAllergen.Value.Single();
                     matched.Add(foundAllergen.Key, foundAllergenIngredient);
 
-                    allergens.Remove(foundAllergen.Key);
-                    ingredients.Remove(foundAllergenIngredient);
+                    _ = allergens.Remove(foundAllergen.Key);
+                    _ = ingredients.Remove(foundAllergenIngredient);
 
-                    foreach(var allergenIngredient in allergens.Values.Where(ai => ai.Contains(foundAllergenIngredient)))
+                    foreach (var allergenIngredient in allergens.Values.Where(ai => ai.Contains(foundAllergenIngredient)))
                     {
-                        allergenIngredient.Remove(foundAllergenIngredient);
+                        _ = allergenIngredient.Remove(foundAllergenIngredient);
                     }
 
                     foreach (var ingredientAllergens in ingredients.Values.Where(ia => ia.Contains(foundAllergen.Key)))
                     {
-                        ingredientAllergens.Remove(foundAllergen.Key);
+                        _ = ingredientAllergens.Remove(foundAllergen.Key);
                     }
 
                     progress = true;
@@ -101,23 +101,26 @@ namespace Advent_Of_Code_2020.Days
                     var foundIngredientAllergen = foundIngredient.Value.Single();
                     matched.Add(foundIngredientAllergen, foundIngredient.Key);
 
-                    allergens.Remove(foundIngredientAllergen);
-                    ingredients.Remove(foundIngredient.Key);
+                    _ = allergens.Remove(foundIngredientAllergen);
+                    _ = ingredients.Remove(foundIngredient.Key);
 
-                    foreach(var allergenIngredients in allergens.Values.Where(ai => ai.Contains(foundIngredient.Key)))
+                    foreach (var allergenIngredients in allergens.Values.Where(ai => ai.Contains(foundIngredient.Key)))
                     {
-                        allergenIngredients.Remove(foundIngredient.Key);
+                        _ = allergenIngredients.Remove(foundIngredient.Key);
                     }
 
                     foreach (var ingredientAllergens in ingredients.Values.Where(ia => ia.Contains(foundIngredientAllergen)))
                     {
-                        ingredientAllergens.Remove(foundIngredientAllergen);
+                        _ = ingredientAllergens.Remove(foundIngredientAllergen);
                     }
 
                     progress = true;
                 }
 
-                if (!progress) throw new InvalidOperationException("No progress made");
+                if (!progress)
+                {
+                    throw new InvalidOperationException("No progress made");
+                }
             }
 
             Console.WriteLine(string.Join(",", matched.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Value)));

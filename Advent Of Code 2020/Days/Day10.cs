@@ -41,7 +41,7 @@ namespace Advent_Of_Code_2020.Days
                 }
             }
 
-            optionals.RemoveAll(o => oneOfRequired.Any(r => r.Contains(o)));
+            _ = optionals.RemoveAll(o => oneOfRequired.Any(r => r.Contains(o)));
 
             Console.WriteLine(Math.Pow(2, optionals.Count) * Math.Pow(7, oneOfRequired.Count));
         }

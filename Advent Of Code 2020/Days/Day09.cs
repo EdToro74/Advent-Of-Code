@@ -25,11 +25,14 @@ namespace Advent_Of_Code_2020.Days
                     break;
                 }
 
-                buffer.Dequeue();
+                _ = buffer.Dequeue();
                 buffer.Enqueue(item.target);
             }
 
-            if (invalidNumber == 0) throw new InvalidOperationException("Couldn't find invalid number");
+            if (invalidNumber == 0)
+            {
+                throw new InvalidOperationException("Couldn't find invalid number");
+            }
 
             for (var windowSize = 2; windowSize < input.Count; windowSize++)
             {

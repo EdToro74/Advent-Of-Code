@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Advent_Of_Code_2019
 {
-    static class Day10
+    internal static class Day10
     {
         public static string Part1(IEnumerable<string> input)
         {
@@ -20,7 +20,7 @@ namespace Advent_Of_Code_2019
             var maxDetected = GetMostDetected(asteroids);
 
             var laser = maxDetected.coordinates;
-            asteroids.Remove(laser);
+            _ = asteroids.Remove(laser);
 
             Console.WriteLine(laser);
 
@@ -52,6 +52,7 @@ namespace Advent_Of_Code_2019
                 {
                     return $"200th asteroid: {asteroid.coords} Value: {asteroid.coords.x * 100 + asteroid.coords.y}";
                 }
+
                 lastAngle = asteroid.angle;
             }
 
@@ -84,14 +85,16 @@ namespace Advent_Of_Code_2019
                             detected = new HashSet<(int x, int y)>();
                             detectedMap[asteroid1] = detected;
                         }
-                        detected.Add(asteroid2);
+
+                        _ = detected.Add(asteroid2);
 
                         if (!detectedMap.TryGetValue(asteroid2, out detected))
                         {
                             detected = new HashSet<(int x, int y)>();
                             detectedMap[asteroid2] = detected;
                         }
-                        detected.Add(asteroid1);
+
+                        _ = detected.Add(asteroid1);
                     }
                 }
             }
@@ -110,8 +113,9 @@ namespace Advent_Of_Code_2019
             {
                 foreach (var asteroid in line.Select((c, x) => (c, x)).Where(p => p.c == '#').Select(p => (p.x, y)))
                 {
-                    asteroids.Add(asteroid);
+                    _ = asteroids.Add(asteroid);
                 }
+
                 y++;
             }
 
@@ -183,6 +187,7 @@ namespace Advent_Of_Code_2019
             {
                 return xFactors;
             }
+
             var yFactors = GetFactors(y);
             if (y == 0)
             {
@@ -194,13 +199,15 @@ namespace Advent_Of_Code_2019
 
         private static IEnumerable<int> GetFactors(int x)
         {
-            for (int factor = 1; factor * factor <= x; factor++)
+            for (var factor = 1; factor * factor <= x; factor++)
             {
                 if (x % factor == 0)
                 {
                     yield return factor;
                     if (factor * factor != x)
+                    {
                         yield return x / factor;
+                    }
                 }
             }
         }

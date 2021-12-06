@@ -5,17 +5,11 @@ using System.Text;
 
 namespace Advent_Of_Code_2019
 {
-    static class Utility
+    internal static class Utility
     {
-        public static long LCM(params long[] numbers)
-        {
-            return numbers.Aggregate(LCM);
-        }
+        public static long LCM(params long[] numbers) => numbers.Aggregate(LCM);
 
-        public static long LCM(IEnumerable<long> numbers)
-        {
-            return numbers.Aggregate(LCM);
-        }
+        public static long LCM(IEnumerable<long> numbers) => numbers.Aggregate(LCM);
 
         public static TOut[,] ToJaggedArray<T, TOut>(this IEnumerable<T> items, Func<T, (int x, int y, TOut value)> mapper)
         {
@@ -52,10 +46,10 @@ namespace Advent_Of_Code_2019
                 for (var x = 0; x < width; x++)
                 {
                     var value = valueMapper(image[y, x]);
-                    display.Append(value);
+                    _ = display.Append(value);
                 }
 
-                display.AppendLine();
+                _ = display.AppendLine();
             }
 
             return display.ToString();
@@ -77,6 +71,7 @@ namespace Advent_Of_Code_2019
                     {
                         break;
                     }
+
                     low = mid;
                 }
                 else
@@ -105,6 +100,7 @@ namespace Advent_Of_Code_2019
                     {
                         break;
                     }
+
                     low = mid;
                 }
                 else
@@ -117,19 +113,10 @@ namespace Advent_Of_Code_2019
             return low;
         }
 
-        private static long LCM(long a, long b)
-        {
-            return Math.Abs(a * b) / GCD(a, b);
-        }
+        private static long LCM(long a, long b) => Math.Abs(a * b) / GCD(a, b);
 
-        private static long GCD(long a, long b)
-        {
-            return b == 0 ? a : GCD(b, a % b);
-        }
+        private static long GCD(long a, long b) => b == 0 ? a : GCD(b, a % b);
 
-        public static int ManhattanDistance((int x, int y) a, (int x, int y) b)
-        {
-            return Math.Abs(a.x - b.x) + Math.Abs(a.y - b.y);
-        }
+        public static int ManhattanDistance((int x, int y) a, (int x, int y) b) => Math.Abs(a.x - b.x) + Math.Abs(a.y - b.y);
     }
 }

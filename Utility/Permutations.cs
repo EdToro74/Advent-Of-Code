@@ -42,16 +42,13 @@ namespace Utility
             }
         }
 
-        struct Permutation : IEnumerable<int>
+        private struct Permutation : IEnumerable<int>
         {
             public static Permutation Empty { get; } = new Permutation(Array.Empty<int>());
 
             private readonly int[] _permutation;
 
-            private Permutation(int[] permutation)
-            {
-                _permutation = permutation;
-            }
+            private Permutation(int[] permutation) => _permutation = permutation;
 
             private Permutation(IEnumerable<int> permutation)
                 : this(permutation.ToArray())
@@ -68,28 +65,21 @@ namespace Utility
                 return HamiltonianPermutationsIterator(n);
             }
 
-            public int this[int index]
-            {
-                get { return _permutation[index]; }
-            }
+            public int this[int index] => _permutation[index];
 
             public IEnumerator<int> GetEnumerator()
             {
-                foreach (int item in _permutation)
+                foreach (var item in _permutation)
+                {
                     yield return item;
+                }
             }
 
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 
-            public int Count { get { return _permutation.Length; } }
+            public int Count => _permutation.Length;
 
-            public override string ToString()
-            {
-                return string.Join(",", _permutation);
-            }
+            public override string ToString() => string.Join(",", _permutation);
 
             private static IEnumerable<Permutation> HamiltonianPermutationsIterator(int n)
             {
@@ -98,14 +88,16 @@ namespace Utility
                     yield return Empty;
                     yield break;
                 }
-                bool forwards = false;
-                foreach (Permutation permutation in HamiltonianPermutationsIterator(n - 1))
+
+                var forwards = false;
+                foreach (var permutation in HamiltonianPermutationsIterator(n - 1))
                 {
-                    for (int index = 0; index < n; index += 1)
+                    for (var index = 0; index < n; index += 1)
                     {
                         yield return new Permutation(
                             InsertAt(permutation, forwards ? index : n - index - 1, n - 1));
                     }
+
                     forwards = !forwards;
                 }
             }
@@ -113,33 +105,39 @@ namespace Utility
             private static IEnumerable<T> InsertAt<T>(IEnumerable<T> items, int position, T newItem)
             {
                 if (items == null)
+                {
                     throw new ArgumentNullException(nameof(items));
-                if (position < 0)
-                    throw new ArgumentOutOfRangeException(nameof(position));
-                return InsertAtIterator<T>(items, position, newItem);
+                }
+
+                return position < 0 ? throw new ArgumentOutOfRangeException(nameof(position)) : InsertAtIterator<T>(items, position, newItem);
             }
 
             private static IEnumerable<T> InsertAtIterator<T>(IEnumerable<T> items, int position, T newItem)
             {
-                int index = 0;
-                bool yieldedNew = false;
-                foreach (T item in items)
+                var index = 0;
+                var yieldedNew = false;
+                foreach (var item in items)
                 {
                     if (index == position)
                     {
                         yield return newItem;
                         yieldedNew = true;
                     }
+
                     yield return item;
                     index += 1;
                 }
+
                 if (index == position)
                 {
                     yield return newItem;
                     yieldedNew = true;
                 }
+
                 if (!yieldedNew)
+                {
                     throw new ArgumentOutOfRangeException(nameof(position));
+                }
             }
         }
     }

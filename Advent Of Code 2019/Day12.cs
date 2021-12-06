@@ -4,17 +4,17 @@ using System.Linq;
 
 namespace Advent_Of_Code_2019
 {
-    static class Day12
+    internal static class Day12
     {
         public static long Part1(IEnumerable<string> input)
         {
             var system = MotionSimulator.SimulateSystem(input).GetEnumerator();
 
-            system.MoveNext();
+            _ = system.MoveNext();
 
             for (var i = 0; i < 1000; i++)
             {
-                system.MoveNext();
+                _ = system.MoveNext();
             }
 
             return system.Current.Sum(o => o.TotalEnergy);
@@ -24,7 +24,7 @@ namespace Advent_Of_Code_2019
         {
             var system = MotionSimulator.SimulateSystem(input).GetEnumerator();
 
-            system.MoveNext();
+            _ = system.MoveNext();
 
             var steps = 0L;
             var xCycle = 0L;
@@ -33,7 +33,7 @@ namespace Advent_Of_Code_2019
 
             do
             {
-                system.MoveNext();
+                _ = system.MoveNext();
                 steps++;
 
                 if (xCycle == 0 && system.Current.All(o => o.Velocity.X == 0))
@@ -61,6 +61,7 @@ namespace Advent_Of_Code_2019
             {
                 Console.WriteLine($"P: {moon.Position} V: {moon.Velocity}");
             }
+
             Console.WriteLine();
         }
     }

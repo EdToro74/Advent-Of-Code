@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Advent_Of_Code_2019
 {
-    static class MotionSimulator
+    internal static class MotionSimulator
     {
         public class MotionObject
         {
@@ -15,10 +15,7 @@ namespace Advent_Of_Code_2019
             public long KineticEnergy => Math.Abs(Velocity.X) + Math.Abs(Velocity.Y) + Math.Abs(Velocity.Z);
             public long TotalEnergy => PotentialEnergy * KineticEnergy;
 
-            public MotionObject(Vector3 position)
-            {
-                Position = position;
-            }
+            public MotionObject(Vector3 position) => Position = position;
 
             public void ApplyGravity(IEnumerable<MotionObject> system)
             {
