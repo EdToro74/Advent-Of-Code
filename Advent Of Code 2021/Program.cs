@@ -7,7 +7,7 @@ namespace Advent_Of_Code_2021
     {
         private static void Main()
         {
-            Day06.Run();
+            Day08.Run();
             Console.WriteLine("Complete!");
         }
     }

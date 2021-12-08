@@ -18,27 +18,30 @@ namespace Advent_Of_Code_2021.Days
 
         public static long SimulateFish(IEnumerable<int> initialFish, int days)
         {
-            var fish = new Dictionary<int, long>(Enumerable.Range(0, 9).Select(i => new KeyValuePair<int, long>(i, 0)));
+            const int cycleLength = 7;
+            const int delayPeriod = 2;
+
+            var fish = new Dictionary<int, long>(Enumerable.Range(0, cycleLength).Select(i => new KeyValuePair<int, long>(i, 0)));
 
             foreach (var day in initialFish.GroupBy(f => f))
             {
                 fish[day.Key] = day.Count();
             }
 
+            var queue = new Queue<long>(Enumerable.Range(0, delayPeriod).Select(_ => 0L));
+
             for (var i = 0; i < days; i++)
             {
-                var newFish = fish[0];
+                var spawnersIndex = i % cycleLength;
 
-                for (var f = 0; f < 8; f++)
-                {
-                    fish[f] = fish[f + 1];
-                }
+                queue.Enqueue(fish[spawnersIndex]);
 
-                fish[6] += newFish;
-                fish[8] = newFish;
+                var juveniles = queue.Dequeue();
+
+                fish[(spawnersIndex + cycleLength) % cycleLength] += juveniles;
             }
 
-            return fish.Sum(d => d.Value);
+            return fish.Sum(d => d.Value) + queue.Sum();
         }
     }
 }
