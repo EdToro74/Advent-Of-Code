@@ -20,7 +20,7 @@ namespace Advent_Of_Code_2021.Days
             return input.Select(l => l.Split(" | ")[1].Split(" ").Where(d => distinct.Contains(d.Length)).Count()).Sum();
         }
 
-        private static object Part2(IEnumerable<string> input)
+        private static int Part2(IEnumerable<string> input)
         {
             var segmentsToDigit = new Dictionary<string, int>
             {
