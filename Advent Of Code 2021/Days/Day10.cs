@@ -55,7 +55,6 @@ namespace Advent_Of_Code_2021.Days
             return lineScores[lineScores.Count / 2];
         }
 
-
         private static (char? firstIllegalCharacter, Stack<char> expectedCharacters) Parse(string line)
         {
             var closeChars = new HashSet<char>() { ')', ']', '}', '>' };
